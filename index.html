@@ -187,7 +187,7 @@ body.light #theme-btn:hover{border-color:#94a3b8;color:#0f172a;}
       <strong>Abril 2026</strong>
       Período: Jun/25 – Mar/26
     </div>
-    <button id="theme-btn" onclick="toggleTheme()">🌙 Dark</button>
+    <button id="theme-btn" onclick="toggleTheme()">Dark</button>
   </div>
 </header>
 
@@ -567,7 +567,7 @@ AA.forEach(d=>{aaBody.innerHTML+=`<tr><td>${d.mes}</td><td class="num">${n(d.soc
 function applyTheme(light) {
   document.body.classList.toggle('light', light);
   const btn = document.getElementById('theme-btn');
-  btn.textContent = light ? '🌙 Dark' : '☀️ Light';
+  btn.textContent = light ? 'Dark' : 'Light';
   const grid = light ? '#e2e8f0' : '#1e2535';
   const txt  = light ? '#94a3b8' : '#64748b';
   Object.values(Chart.instances).forEach(c => {
