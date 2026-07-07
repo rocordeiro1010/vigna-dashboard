@@ -93,15 +93,6 @@ body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background
 .kpis-4 { grid-template-columns: repeat(4,1fr); }
 .kpis-3 { grid-template-columns: repeat(3,1fr); }
 .kpi { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px; position: relative; overflow: visible; transition: transform .22s,box-shadow .22s,border-color .22s; cursor: default; }
-.kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 14px 14px 0 0; }
-.kpi.purple::before   { background: linear-gradient(90deg,#6366f1,#8b5cf6); }
-.kpi.green::before    { background: linear-gradient(90deg,#10b981,#34d399); }
-.kpi.blue::before     { background: linear-gradient(90deg,#3b82f6,#60a5fa); }
-.kpi.orange::before   { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
-.kpi.pink::before     { background: linear-gradient(90deg,#ec4899,#f472b6); }
-.kpi.red::before      { background: linear-gradient(90deg,#ef4444,#f87171); }
-.kpi.yellow::before   { background: linear-gradient(90deg,#eab308,#facc15); }
-.kpi.darkblue::before { background: linear-gradient(90deg,#1d4ed8,#3b82f6); }
 .kpi.purple:hover   { transform:translateY(-4px); box-shadow:0 12px 32px rgba(99,102,241,.18);  border-color:rgba(99,102,241,.4); }
 .kpi.green:hover    { transform:translateY(-4px); box-shadow:0 12px 32px rgba(16,185,129,.18);  border-color:rgba(16,185,129,.4); }
 .kpi.blue:hover     { transform:translateY(-4px); box-shadow:0 12px 32px rgba(59,130,246,.18);  border-color:rgba(59,130,246,.4); }
@@ -410,7 +401,8 @@ footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 12px; bor
 </div>
 
 <nav class="tab-nav">
-  <button class="tab-btn active" onclick="soSwitchTab('aa')"  style="--accent:#1d4ed8"><span class="tab-dot" style="background:#1d4ed8"></span>Vigna A.A</button>
+  <button class="tab-btn active" onclick="soSwitchTab('geral')" style="--accent:#6366f1"><span class="tab-dot" style="background:#6366f1"></span>Visão Geral</button>
+  <button class="tab-btn"        onclick="soSwitchTab('aa')"  style="--accent:#1d4ed8"><span class="tab-dot" style="background:#1d4ed8"></span>Vigna A.A</button>
   <button class="tab-btn"        onclick="soSwitchTab('tax')" style="--accent:#eab308"><span class="tab-dot" style="background:#eab308"></span>Vigna Tax</button>
   <button class="tab-btn"        onclick="soSwitchTab('lc')"  style="--accent:#f97316"><span class="tab-dot" style="background:#f97316"></span>Legal Control</button>
   <button class="tab-btn"        onclick="soSwitchTab('le')"  style="--accent:#ef4444"><span class="tab-dot" style="background:#ef4444"></span>Legal Ética</button>
@@ -418,8 +410,30 @@ footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 12px; bor
   <button class="tab-btn"        onclick="soSwitchTab('lh')"  style="--accent:#64748b"><span class="tab-dot" style="background:#64748b"></span>Legal Hub</button>
 </nav>
 
+<!-- ══ VISÃO GERAL ══ -->
+<div class="tab-panel active" id="panel-so-geral"><div class="container">
+  <div class="kpis kpis-4">
+    <div class="kpi purple"><div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div><div class="kpi-value" id="so-kpi-seg">142.5k</div><div class="kpi-delta" id="so-kpi-seg-d"></div><div class="kpi-sub">Soma das 6 marcas (IG+LI)</div></div>
+    <div class="kpi blue"  ><div class="kpi-icon">📣</div><div class="kpi-label">Alcance Total</div><div class="kpi-value" id="so-kpi-alc">120k</div><div class="kpi-delta" id="so-kpi-alc-d"></div><div class="kpi-sub">Orgânico, IG+LI</div></div>
+    <div class="kpi green" ><div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos Totais</div><div class="kpi-value" id="so-kpi-eng">2.500</div><div class="kpi-delta" id="so-kpi-eng-d"></div><div class="kpi-sub">Curtidas + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng. Média</div><div class="kpi-value" id="so-kpi-taxa">2,1%</div><div class="kpi-delta" id="so-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="section-title">Comparativo por Marca</div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores por Marca (IG+LI)</div><canvas id="so-geral-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Engajamento por Marca (IG+LI)</div><canvas id="so-geral-eng" height="230"></canvas></div>
+  </div>
+  <div class="section-title">Resumo por Marca</div>
+  <div class="card grid-1">
+    <table class="data-table">
+      <thead><tr><th>Marca</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th>Participação (Alcance)</th></tr></thead>
+      <tbody id="so-resumo-body"></tbody>
+    </table>
+  </div>
+</div></div>
+
 <!-- ══ VIGNA A.A ══ -->
-<div class="tab-panel active" id="panel-so-aa"><div class="container">
+<div class="tab-panel" id="panel-so-aa"><div class="container">
   <div class="section-title">Instagram <span class="badge badge-ig" style="margin-left:6px">@vignaaa</span></div>
   <div class="kpis kpis-4">
     <div class="kpi darkblue"><div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div><div class="kpi-value" id="aa-ig-kpi-seg">11.555</div><div class="kpi-delta" id="aa-ig-kpi-seg-d"></div><div class="kpi-sub" id="aa-ig-kpi-seg-sub">Abr/26</div></div>
@@ -1651,6 +1665,34 @@ function calcLI(arr, period, gran) {
 }
 
 // ══════════════════════════════════════════════
+// VISÃO GERAL (comparativo entre marcas)
+// ══════════════════════════════════════════════
+const BRANDS_SOCIAL = [
+  {key:'aa', nome:'Vigna A.A',          ig:AA_IG, li:AA_LI, cor:'#1d4ed8'},
+  {key:'tax',nome:'Vigna Tax',          ig:TAX_IG,li:TAX_LI,cor:'#eab308'},
+  {key:'lc', nome:'Legal Control',      ig:LC_IG, li:LC_LI, cor:'#f97316'},
+  {key:'le', nome:'Legal Ética',        ig:LE_IG, li:LE_LI, cor:'#ef4444'},
+  {key:'cc', nome:'Compliance Control', ig:CC_IG, li:CC_LI, cor:'#0ea5e9'},
+  {key:'lh', nome:'Legal Hub',          ig:LH_IG, li:LH_LI, cor:'#64748b'},
+];
+function calcBrandTotal(ig, li, period, gran) {
+  const igC = calcIG(ig, period, gran) || {seg:0,alcance:0,eng:0,posts:0};
+  const liC = calcLI(li, period, gran) || {seg:0,alcance:0,eng:0,posts:0};
+  return {
+    seg:     igC.seg + liC.seg,
+    alcance: igC.alcance + liC.alcance,
+    eng:     igC.eng + liC.eng,
+    posts:   igC.posts + liC.posts,
+  };
+}
+function calcSocialGeral(period, gran) {
+  let seg=0, alcance=0, eng=0, posts=0;
+  BRANDS_SOCIAL.forEach(b => { const t = calcBrandTotal(b.ig, b.li, period, gran); seg+=t.seg; alcance+=t.alcance; eng+=t.eng; posts+=t.posts; });
+  const taxa = alcance>0 ? (eng/alcance*100) : 0;
+  return { seg, alcance, eng, posts, taxa };
+}
+
+// ══════════════════════════════════════════════
 // DELTA HTML
 // ══════════════════════════════════════════════
 function deltaHtml(curr, prev) {
@@ -1733,6 +1775,19 @@ function updateAllKPIs() {
   updateBrandIG('le-ig', LE_IG); updateBrandLI('le-li', LE_LI);
   updateBrandIG('cc-ig', CC_IG); updateBrandLI('cc-li', CC_LI);
   updateBrandIG('lh-ig', LH_IG); updateBrandLI('lh-li', LH_LI);
+
+  // Visão Geral
+  const per = activePeriod, gran = activeGran, pp = gran==='mensal'?null:prevPeriod(per,gran);
+  const g = calcSocialGeral(per,gran), gp = pp?calcSocialGeral(pp,gran):null;
+  $set('so-kpi-seg',  fmtN(g.seg));
+  $set('so-kpi-alc',  fmtNk(g.alcance));
+  $set('so-kpi-eng',  fmtN(g.eng));
+  $set('so-kpi-taxa', fmtP(g.taxa));
+  $set('so-kpi-seg-d',  gp?deltaHtml(g.seg,gp.seg):'');
+  $set('so-kpi-alc-d',  gp?deltaHtml(g.alcance,gp.alcance):'');
+  $set('so-kpi-eng-d',  gp?deltaHtml(g.eng,gp.eng):'');
+  $set('so-kpi-taxa-d', gp?deltaHtml(g.taxa,gp.taxa):'');
+
   updateContextBar();
 }
 
@@ -1888,8 +1943,21 @@ function renderCharts() {
     {label:'Engajamentos', data:lhLiRows.map(d=>d.eng),    backgroundColor:fullC(lhLiM.length,56,189,248,.85),borderRadius:4,_cm:cm(56,189,248,.85)},
   ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
 
+  // ── VISÃO GERAL (comparativo entre marcas) ───
+  const geralTotals = BRANDS_SOCIAL.map(b => calcBrandTotal(b.ig, b.li, activePeriod, activeGran));
+  mkChart('so-geral-seg',{type:'bar',data:{labels:BRANDS_SOCIAL.map(b=>b.nome),datasets:[{label:'Seguidores',data:geralTotals.map(t=>t.seg),backgroundColor:BRANDS_SOCIAL.map(b=>b.cor+'cc'),borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('so-geral-eng',{type:'bar',data:{labels:BRANDS_SOCIAL.map(b=>b.nome),datasets:[{label:'Engajamentos',data:geralTotals.map(t=>t.eng),backgroundColor:BRANDS_SOCIAL.map(b=>b.cor+'cc'),borderRadius:4}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+
   // Apply highlight if period already selected
   if (activePeriod !== 'todos') updateChartHighlights();
+}
+
+function updateSocialGeralCharts() {
+  const totals = BRANDS_SOCIAL.map(b => calcBrandTotal(b.ig, b.li, activePeriod, activeGran));
+  const segChart = charts['so-geral-seg'];
+  if (segChart) { segChart.data.datasets[0].data = totals.map(t=>t.seg); segChart.update(); }
+  const engChart = charts['so-geral-eng'];
+  if (engChart) { engChart.data.datasets[0].data = totals.map(t=>t.eng); engChart.update(); }
 }
 
 // ══════════════════════════════════════════════
@@ -1925,6 +1993,22 @@ function renderLITable(tbodyId, arr) {
   el.innerHTML += `<tr class="total-row"><td>TOTAL / ÚLT.</td><td class="num">${fmtN(lastSeg)}</td><td class="num">${fmtNk(tAlc)}</td><td class="num">${fmtN(tVis)||'—'}</td><td class="num positive">${fmtN(tEng)}</td><td class="num positive">${fmtP(tTaxa)}</td><td class="num">${tPosts||'—'}</td></tr>`;
 }
 
+function renderSocialGeralTable() {
+  const totals = BRANDS_SOCIAL.map(b => calcBrandTotal(b.ig, b.li, activePeriod, activeGran));
+  const totalAlcance = totals.reduce((a,t)=>a+t.alcance,0);
+  const body = document.getElementById('so-resumo-body'); if (!body) return;
+  body.innerHTML = '';
+  BRANDS_SOCIAL.forEach((b,i) => {
+    const t = totals[i];
+    const pct = totalAlcance>0 ? (t.alcance/totalAlcance*100) : 0;
+    body.innerHTML += `<tr><td style="font-weight:600;color:#0f172a">${b.nome}</td><td class="num">${fmtN(t.seg)}</td><td class="num">${fmtNk(t.alcance)}</td><td class="num positive">${fmtN(t.eng)}</td><td class="num">${t.alcance>0?fmtP(t.eng/t.alcance*100):'—'}</td><td style="min-width:130px;padding-right:16px"><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${b.cor}"></div></div></td></tr>`;
+  });
+  const totalSeg = totals.reduce((a,t)=>a+t.seg,0);
+  const totalEng = totals.reduce((a,t)=>a+t.eng,0);
+  const totalTaxa = totalAlcance>0 ? (totalEng/totalAlcance*100) : 0;
+  body.innerHTML += `<tr class="total-row"><td>TOTAL</td><td class="num">${fmtN(totalSeg)}</td><td class="num">${fmtNk(totalAlcance)}</td><td class="num positive">${fmtN(totalEng)}</td><td class="num positive">${fmtP(totalTaxa)}</td><td></td></tr>`;
+}
+
 function renderAllTables() {
   renderIGTable('aa-ig-table', AA_IG); renderLITable('aa-li-table', AA_LI);
   renderIGTable('tax-ig-table', TAX_IG); renderLITable('tax-li-table', TAX_LI);
@@ -1932,6 +2016,7 @@ function renderAllTables() {
   renderIGTable('le-ig-table', LE_IG); renderLITable('le-li-table', LE_LI);
   renderIGTable('cc-ig-table', CC_IG); renderLITable('cc-li-table', CC_LI);
   renderIGTable('lh-ig-table', LH_IG); renderLITable('lh-li-table', LH_LI);
+  renderSocialGeralTable();
 }
 
 // ══════════════════════════════════════════════
@@ -1965,6 +2050,7 @@ function setGran(g) {
   renderCharts();
   renderAllTables();
   updateAllKPIs();
+  updateSocialGeralCharts();
 }
 
 function setPeriod(p) {
@@ -1976,6 +2062,7 @@ function setPeriod(p) {
   updateAllKPIs();
   updateChartHighlights();
   renderAllTables();
+  updateSocialGeralCharts();
 }
 
 // ══════════════════════════════════════════════
@@ -2007,7 +2094,7 @@ function switchTab(id) {
   root.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   root.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-so-'+id).classList.add('active');
-  ['aa','tax','lc','le','cc','lh'].forEach((t,i) => {
+  ['geral','aa','tax','lc','le','cc','lh'].forEach((t,i) => {
     if (t===id) root.querySelectorAll('.tab-btn')[i].classList.add('active');
   });
   animatePanel(id);
@@ -2021,7 +2108,7 @@ updateScrollBtns();
 renderCharts();
 renderAllTables();
 updateAllKPIs();
-setTimeout(() => animatePanel('aa'), 100);
+setTimeout(() => animatePanel('geral'), 100);
 
 window.soSwitchTab = switchTab;
 window.soSetGran = setGran;
