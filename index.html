@@ -14,17 +14,25 @@ body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background
 .app { display: flex; min-height: 100vh; }
 
 /* ── SIDEBAR ── */
-.sidebar { width: 240px; flex-shrink: 0; background: #0f172a; padding: 26px 16px; display: flex; flex-direction: column; gap: 4px; }
-.sidebar-brand { display: flex; align-items: center; gap: 12px; padding: 0 10px 26px; }
+.sidebar { width: 240px; flex-shrink: 0; background: #0f172a; padding: 26px 16px; display: flex; flex-direction: column; gap: 4px; transition: width .22s ease, padding .22s ease; position: relative; }
+.sidebar-brand { display: flex; align-items: center; gap: 12px; padding: 0 10px 26px; overflow: hidden; }
 .sidebar-brand .logo { width: 38px; height: 38px; background: linear-gradient(135deg,#6366f1,#8b5cf6); border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 .sidebar-brand .logo svg { width: 20px; height: 20px; }
-.sidebar-brand strong { display: block; font-size: 14px; color: #f1f5f9; }
-.sidebar-brand span { font-size: 11px; color: #64748b; }
-.nav-item { display: flex; align-items: center; gap: 11px; width: 100%; padding: 11px 14px; border: none; border-radius: 10px; background: none; color: #94a3b8; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .18s; text-align: left; }
+.sidebar-brand strong { display: block; font-size: 14px; color: #f1f5f9; white-space: nowrap; }
+.sidebar-brand span { font-size: 11px; color: #64748b; white-space: nowrap; }
+.nav-item { display: flex; align-items: center; gap: 11px; width: 100%; padding: 11px 14px; border: none; border-radius: 10px; background: none; color: #94a3b8; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .18s; text-align: left; overflow: hidden; white-space: nowrap; }
 .nav-item:hover { background: rgba(255,255,255,.06); color: #e2e8f0; }
 .nav-item.active { background: linear-gradient(135deg,#6366f1,#8b5cf6); color: #fff; box-shadow: 0 6px 16px rgba(99,102,241,.35); }
-.nav-icon { font-size: 16px; line-height: 1; }
-.sidebar-footer { margin-top: auto; padding: 16px 10px 0; font-size: 11px; color: #475569; border-top: 1px solid rgba(255,255,255,.07); line-height: 1.6; }
+.nav-icon { font-size: 16px; line-height: 1; flex-shrink: 0; }
+.sidebar-footer { margin-top: auto; padding: 16px 10px 0; font-size: 11px; color: #475569; border-top: 1px solid rgba(255,255,255,.07); line-height: 1.6; white-space: nowrap; overflow: hidden; }
+.sidebar-toggle { position: absolute; top: 22px; right: -12px; width: 24px; height: 24px; border-radius: 50%; background: #1e293b; border: 1px solid rgba(255,255,255,.12); color: #94a3b8; font-size: 13px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .18s; padding: 0; z-index: 5; }
+.sidebar-toggle:hover { background: #334155; color: #fff; }
+.sidebar.collapsed { width: 72px; padding-left: 12px; padding-right: 12px; }
+.sidebar.collapsed .sidebar-brand { justify-content: center; padding: 0 0 26px; }
+.sidebar.collapsed .sidebar-brand strong, .sidebar.collapsed .sidebar-brand span { display: none; }
+.sidebar.collapsed .nav-item { justify-content: center; padding: 11px 0; }
+.sidebar.collapsed .nav-item .nav-label { display: none; }
+.sidebar.collapsed .sidebar-footer { display: none; }
 
 /* ── MAIN / TOPBAR ── */
 .main { flex: 1; min-width: 0; }
@@ -166,20 +174,21 @@ footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 12px; bor
 <body>
 
 <div class="app">
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" onclick="toggleSidebar()" title="Recolher menu"><span id="sidebar-toggle-icon">‹</span></button>
     <div class="sidebar-brand">
       <div class="logo"><svg viewBox="0 0 32 32" fill="none"><rect x="5" y="16" width="6" height="12" rx="1.5" fill="white" opacity=".9"/><rect x="13" y="10" width="6" height="18" rx="1.5" fill="white" opacity=".9"/><rect x="21" y="6" width="6" height="22" rx="1.5" fill="white" opacity=".9"/></svg></div>
       <div><strong>Grupo Vigna</strong><span>Dashboards</span></div>
     </div>
-    <button class="nav-item active" data-view="growth" onclick="showView('growth')"><span class="nav-icon">📈</span>Growth Marketing</button>
-    <button class="nav-item" data-view="social" onclick="showView('social')"><span class="nav-icon">📣</span>Social Media</button>
+    <button class="nav-item active" data-view="growth" onclick="showView('growth')"><span class="nav-icon">📈</span><span class="nav-label">Growth Marketing</span></button>
+    <button class="nav-item" data-view="social" onclick="showView('social')"><span class="nav-icon">📣</span><span class="nav-label">Social Media</span></button>
     <div class="sidebar-footer">Grupo Vigna<br>Dashboard unificado</div>
   </aside>
 
   <div class="main">
     <header class="topbar">
       <div><h1 id="topbar-title">Growth Marketing Dashboard</h1><p id="topbar-sub">Grupo Vigna · Análise por Marca</p></div>
-      <div class="header-date"><strong id="topbar-date-strong">Abril 2026</strong><span id="topbar-date-range">Jun/25 – Mar/26</span></div>
+      <div class="header-date"><strong id="topbar-date-strong">Julho 2026</strong><span id="topbar-date-range">Jun/25 – Jul/26</span></div>
     </header>
 
     <section id="view-growth" class="view active">
@@ -341,7 +350,31 @@ footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 12px; bor
 
 <!-- COMPLIANCE -->
 <div class="tab-panel" id="panel-gr-cc"><div class="container">
-  <div class="empty-state"><div class="icon">📋</div><h3>Compliance Control</h3><p>Nenhum dado de marketing registrado ainda.<br>Assim que os dados forem inseridos, aparecerão aqui.</p></div>
+  <div class="kpis kpis-5">
+    <div class="kpi blue"><div class="kpi-icon">💰</div><div class="kpi-label">Investimento</div><div class="kpi-value" id="cc-kpi-inv">R$ 5,3k</div><div class="kpi-delta" id="cc-kpi-inv-d"></div><div class="kpi-sub">Jan/26 – Jul/26</div></div>
+    <div class="kpi blue"  ><div class="kpi-icon">👥</div><div class="kpi-label">Leads</div><div class="kpi-value" id="cc-kpi-leads">266</div><div class="kpi-delta" id="cc-kpi-leads-d"></div><div class="kpi-sub">Pagos + Orgânicos</div></div>
+    <div class="kpi blue"  ><div class="kpi-icon">🎯</div><div class="kpi-label">SQLs</div><div class="kpi-value" id="cc-kpi-sql">32</div><div class="kpi-delta" id="cc-kpi-sql-d"></div><div class="kpi-sub">Leads qualificados</div></div>
+    <div class="kpi green" ><div class="kpi-icon">📝</div><div class="kpi-label">Contratos</div><div class="kpi-value" id="cc-kpi-cont">2</div><div class="kpi-delta" id="cc-kpi-cont-d"></div><div class="kpi-sub">Ticket médio R$ 500/mês</div></div>
+    <div class="kpi orange"><div class="kpi-icon">💵</div><div class="kpi-label">LTV Projetado</div><div class="kpi-value" id="cc-kpi-ltv">R$ 12k</div><div class="kpi-delta" id="cc-kpi-ltv-d"></div><div class="kpi-sub">2 × R$ 6.000</div></div>
+  </div>
+  <div class="section-title">Funil de Conversão</div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Leads → MQL → SQL → Contratos <span class="badge badge-blue" id="cc-badge">por mês</span></div><canvas id="cc-funil" height="240"></canvas></div>
+    <div class="card"><div class="card-title">Investimento vs LTV Projetado (R$)</div><canvas id="cc-inv-lucro" height="240"></canvas></div>
+  </div>
+  <div class="section-title">Eficiência de Custo</div>
+  <div class="grid-3">
+    <div class="card"><div class="card-title">Custo por Lead (R$)</div><canvas id="cc-custo-lead" height="200"></canvas></div>
+    <div class="card"><div class="card-title">Custo por SQL (R$)</div><canvas id="cc-custo-sql" height="200"></canvas></div>
+    <div class="card"><div class="card-title">Conversão Lead → Contrato (%)</div><canvas id="cc-conv" height="200"></canvas></div>
+  </div>
+  <div class="section-title">Tabela Detalhada</div>
+  <div class="card grid-1">
+    <table class="data-table">
+      <thead><tr><th id="cc-th-per">Mês</th><th class="num">Investimento</th><th class="num">Leads</th><th class="num">MQL</th><th class="num">SQL</th><th class="num">Contratos</th><th class="num">Custo/Lead</th><th class="num">Custo/SQL</th><th class="num">LTV Proj.</th></tr></thead>
+      <tbody id="cc-table-body"></tbody>
+    </table>
+  </div>
 </div></div>
 
 <!-- LEGAL HUB -->
@@ -597,10 +630,47 @@ footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 12px; bor
 
 <!-- ══ LEGAL HUB ══ -->
 <div class="tab-panel" id="panel-so-lh"><div class="container">
-  <div class="empty-state"><div class="icon">🏛️</div><h3>Legal Hub</h3><p>Nenhum dado de social media registrado ainda nesta marca.<br>Assim que os dados forem inseridos, aparecerão aqui.</p></div>
+  <div class="section-title">Instagram <span class="badge badge-ig" style="margin-left:6px">@legalhub</span></div>
+  <div class="kpis kpis-4">
+    <div class="kpi red">  <div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div><div class="kpi-value" id="lh-ig-kpi-seg">252</div><div class="kpi-delta" id="lh-ig-kpi-seg-d"></div><div class="kpi-sub" id="lh-ig-kpi-seg-sub">Jan/26 · Início Abr/25</div></div>
+    <div class="kpi blue">  <div class="kpi-icon">📣</div><div class="kpi-label">Alcance</div>   <div class="kpi-value" id="lh-ig-kpi-alc">533</div><div class="kpi-delta" id="lh-ig-kpi-alc-d"></div><div class="kpi-sub">Orgânico</div></div>
+    <div class="kpi green"> <div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos</div><div class="kpi-value" id="lh-ig-kpi-eng">91</div><div class="kpi-delta" id="lh-ig-kpi-eng-d"></div><div class="kpi-sub">Curtidas + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng.</div> <div class="kpi-value" id="lh-ig-kpi-taxa">17,07%</div><div class="kpi-delta" id="lh-ig-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores ao Longo do Tempo <span class="badge badge-ig">IG</span></div><canvas id="lh-ig-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Alcance vs Impressões <span class="badge badge-ig">IG</span></div><canvas id="lh-ig-alcance" height="230"></canvas></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Engajamentos por Mês <span class="badge badge-ig">IG</span></div><canvas id="lh-ig-eng" height="200"></canvas></div>
+    <div class="card"><div class="card-title">Taxa de Engajamento (%) <span class="badge badge-ig">IG</span></div><canvas id="lh-ig-taxa" height="200"></canvas></div>
+  </div>
+
+  <div class="section-title li">LinkedIn <span class="badge badge-li" style="margin-left:6px">Legal Hub</span></div>
+  <div class="kpis kpis-4">
+    <div class="kpi blue">  <div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div>  <div class="kpi-value" id="lh-li-kpi-seg">24</div><div class="kpi-delta" id="lh-li-kpi-seg-d"></div><div class="kpi-sub" id="lh-li-kpi-seg-sub">Jan/26 · Início Jun/25</div></div>
+    <div class="kpi blue">  <div class="kpi-icon">📣</div><div class="kpi-label">Alcance</div>     <div class="kpi-value" id="lh-li-kpi-alc">56</div>  <div class="kpi-delta" id="lh-li-kpi-alc-d"></div><div class="kpi-sub">Impressões orgânicas</div></div>
+    <div class="kpi green"> <div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos</div><div class="kpi-value" id="lh-li-kpi-eng">2</div>   <div class="kpi-delta" id="lh-li-kpi-eng-d"></div><div class="kpi-sub">Reações + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng.</div>   <div class="kpi-value" id="lh-li-kpi-taxa">3,57%</div><div class="kpi-delta" id="lh-li-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores ao Longo do Tempo <span class="badge badge-li">LI</span></div><canvas id="lh-li-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Alcance e Engajamentos <span class="badge badge-li">LI</span></div><canvas id="lh-li-alcance" height="230"></canvas></div>
+  </div>
+
+  <div class="section-title">Tabela Detalhada — Instagram</div>
+  <div class="card grid-1"><table class="data-table">
+    <thead><tr><th>Mês</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Impressões</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th class="num">Posts</th></tr></thead>
+    <tbody id="lh-ig-table"></tbody>
+  </table></div>
+  <div class="section-title">Tabela Detalhada — LinkedIn</div>
+  <div class="card grid-1"><table class="data-table">
+    <thead><tr><th>Mês</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Visitantes Únicos</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th class="num">Posts</th></tr></thead>
+    <tbody id="lh-li-table"></tbody>
+  </table></div>
 </div></div>
 
-<footer>Grupo Vigna · Dashboard Social Media · Jan/25 – Abr/26</footer>
+<footer>Grupo Vigna · Dashboard Social Media · Jan/25 – Mai/26</footer>
     </section>
   </div>
 </div>
@@ -622,6 +692,8 @@ const LC = [
   {mes:'Jan/26',investimento:1875.16,leads:38, mql:14, sql:6,  contratos:0, lucro:0,     custo_lead:49.35,  custo_sql:312.53},
   {mes:'Feb/26',investimento:2577.73,leads:50, mql:19, sql:9,  contratos:1, lucro:21600,  custo_lead:51.55,  custo_sql:286.41},
   {mes:'Mar/26',investimento:3383.56,leads:64, mql:26, sql:6,  contratos:1, lucro:21600,  custo_lead:52.87,  custo_sql:563.93},
+  {mes:'Apr/26',investimento:0,      leads:12, mql:12, sql:6,  contratos:0, lucro:0,     custo_lead:0,      custo_sql:0},
+  {mes:'May/26',investimento:0,      leads:2,  mql:2,  sql:2,  contratos:0, lucro:0,     custo_lead:0,      custo_sql:0},
 ];
 const LE = [
   {mes:'Jun/25',investimento:0,     leads:0,   mql:0,  sql:0,  contratos:0, lucro:0,    custo_lead:0},
@@ -634,6 +706,17 @@ const LE = [
   {mes:'Jan/26',investimento:870.26, leads:68,  mql:31, sql:4,  contratos:0, lucro:0,    custo_lead:12.8},
   {mes:'Feb/26',investimento:1676.4, leads:106, mql:38, sql:5,  contratos:1, lucro:6000,  custo_lead:15.82},
   {mes:'Mar/26',investimento:0,      leads:1,   mql:1,  sql:5,  contratos:0, lucro:0,    custo_lead:0},
+  {mes:'Apr/26',investimento:0,      leads:2,   mql:1,  sql:1,  contratos:0, lucro:0,    custo_lead:0},
+  {mes:'May/26',investimento:0,      leads:7,   mql:5,  sql:3,  contratos:2, lucro:12000,custo_lead:0},
+];
+const CC = [
+  {mes:'Jan/26',investimento:0,     leads:0,   mql:0,  sql:0,  contratos:0, lucro:0,    custo_lead:0,     custo_sql:0},
+  {mes:'Feb/26',investimento:0,     leads:0,   mql:0,  sql:0,  contratos:0, lucro:0,    custo_lead:0,     custo_sql:0},
+  {mes:'Mar/26',investimento:0,     leads:0,   mql:0,  sql:0,  contratos:0, lucro:0,    custo_lead:0,     custo_sql:0},
+  {mes:'Apr/26',investimento:683.92,leads:48,  mql:24, sql:8,  contratos:0, lucro:0,    custo_lead:14.25, custo_sql:85.49},
+  {mes:'May/26',investimento:2596.38,leads:218,mql:83, sql:7,  contratos:2, lucro:12000,custo_lead:11.91, custo_sql:370.91},
+  {mes:'Jun/26',investimento:1984.36,leads:123,mql:63, sql:17, contratos:0, lucro:0,    custo_lead:16.13, custo_sql:116.73},
+  {mes:'Jul/26',investimento:0,     leads:0,   mql:0,  sql:0,  contratos:0, lucro:0,    custo_lead:0,     custo_sql:0},
 ];
 const TAX = [
   {mes:'Jan/25',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:32, search:103, investimento:0},
@@ -649,7 +732,7 @@ const TAX = [
   {mes:'Nov/25',leads_pagos:3,  leads_org:4,mql:1, sql:0,contratos:0,social:14, search:464, investimento:658.96},
   {mes:'Dec/25',leads_pagos:13, leads_org:2,mql:3, sql:0,contratos:0,social:15, search:1010,investimento:1122.47},
   {mes:'Jan/26',leads_pagos:0,  leads_org:6,mql:3, sql:0,contratos:0,social:25, search:656, investimento:0},
-  {mes:'Feb/26',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:0,  search:0,   investimento:0},
+  {mes:'Feb/26',leads_pagos:0,  leads_org:6,mql:3, sql:0,contratos:0,social:0,  search:0,   investimento:0},
   {mes:'Mar/26',leads_pagos:0,  leads_org:0,mql:0, sql:0,contratos:0,social:0,  search:0,   investimento:0},
 ];
 const AA = [
@@ -663,6 +746,9 @@ const AA = [
   {mes:'Aug/25',social:64,search:1969,receita_ads:1708.23},
   {mes:'Sep/25',social:39,search:1796,receita_ads:0},
   {mes:'Oct/25',social:48,search:1836,receita_ads:0},
+  {mes:'Nov/25',social:0, search:0,   receita_ads:0},
+  {mes:'Dec/25',social:0, search:0,   receita_ads:0},
+  {mes:'Jan/26',social:0, search:0,   receita_ads:0},
 ];
 
 // ══════════════════════════════════════════════
@@ -744,6 +830,11 @@ const aggTAX = gran => aggregate(TAX, gran,
 
 const aggAA = gran => aggregate(AA, gran, ['social','search','receita_ads']);
 
+const aggCC = gran => aggregate(CC, gran,
+  ['investimento','leads','mql','sql','contratos','lucro'],
+  d => { d.custo_lead = d.leads>0 ? d.investimento/d.leads : 0;
+         d.custo_sql  = d.sql>0   ? d.investimento/d.sql   : 0; });
+
 // ══════════════════════════════════════════════
 // KPI CALCULATIONS
 // ══════════════════════════════════════════════
@@ -752,11 +843,12 @@ function s(arr, field) { return arr.reduce((t,d) => t+(d[field]||0), 0); }
 function calcGeral(period, gran) {
   const lc = filterRows(LC, period, gran), le = filterRows(LE, period, gran);
   const tx = filterRows(TAX, period, gran), aa = filterRows(AA, period, gran);
+  const cc = filterRows(CC, period, gran);
   return {
-    inv:   s(lc,'investimento') + s(le,'investimento') + s(tx,'investimento') + s(aa,'receita_ads'),
-    leads: s(lc,'leads') + s(le,'leads') + s(tx,'leads_pagos') + s(tx,'leads_org'),
-    cont:  s(lc,'contratos') + s(le,'contratos') + s(tx,'contratos'),
-    ltv:   s(lc,'lucro') + s(le,'lucro'),
+    inv:   s(lc,'investimento') + s(le,'investimento') + s(tx,'investimento') + s(aa,'receita_ads') + s(cc,'investimento'),
+    leads: s(lc,'leads') + s(le,'leads') + s(tx,'leads_pagos') + s(tx,'leads_org') + s(cc,'leads'),
+    cont:  s(lc,'contratos') + s(le,'contratos') + s(tx,'contratos') + s(cc,'contratos'),
+    ltv:   s(lc,'lucro') + s(le,'lucro') + s(cc,'lucro'),
   };
 }
 function calcLC(period, gran)  {
@@ -774,6 +866,10 @@ function calcTAX(period, gran) {
 function calcAA(period, gran)  {
   const f = filterRows(AA, period, gran);
   return { inv:s(f,'receita_ads') };
+}
+function calcCC(period, gran)  {
+  const f = filterRows(CC, period, gran);
+  return { inv:s(f,'investimento'), leads:s(f,'leads'), sql:s(f,'sql'), cont:s(f,'contratos'), ltv:s(f,'lucro') };
 }
 
 // Previous period for delta
@@ -804,14 +900,13 @@ function $set(id, html) { const el=document.getElementById(id); if(el) el.innerH
 
 function updateAllKPIs() {
   const per=activePeriod, gran=activeGran, pp=gran==='mensal'?null:prevPeriod(per,gran);
-  const isTodos = per === 'todos';
 
   // Geral
   const g=calcGeral(per,gran), gp=pp?calcGeral(pp,gran):null;
-  $set('g-kpi-inv',   isTodos?'R$ 42,7k':fmtRk(g.inv));
-  $set('g-kpi-leads', isTodos?'1.117':(g.leads>0?g.leads.toLocaleString('pt-BR'):'—'));
-  $set('g-kpi-cont',  isTodos?'15':(g.cont>0?g.cont:'—'));
-  $set('g-kpi-ltv',   isTodos?'R$ 162k':fmtRk(g.ltv));
+  $set('g-kpi-inv',   fmtRk(g.inv));
+  $set('g-kpi-leads', g.leads>0?g.leads.toLocaleString('pt-BR'):'—');
+  $set('g-kpi-cont',  g.cont>0?g.cont:'—');
+  $set('g-kpi-ltv',   fmtRk(g.ltv));
   $set('g-kpi-inv-d',   gp?deltaHtml(g.inv,gp.inv):'');
   $set('g-kpi-leads-d', gp?deltaHtml(g.leads,gp.leads):'');
   $set('g-kpi-cont-d',  gp?deltaHtml(g.cont,gp.cont):'');
@@ -819,11 +914,11 @@ function updateAllKPIs() {
 
   // Legal Control
   const lc=calcLC(per,gran), lcp=pp?calcLC(pp,gran):null;
-  $set('lc-kpi-inv',   isTodos?'R$ 21k':fmtRk(lc.inv));
-  $set('lc-kpi-leads', isTodos?'359':(lc.leads>0?lc.leads:'—'));
-  $set('lc-kpi-sql',   isTodos?'50':(lc.sql>0?lc.sql:'—'));
-  $set('lc-kpi-cont',  isTodos?'5':(lc.cont>0?lc.cont:'—'));
-  $set('lc-kpi-ltv',   isTodos?'R$ 108k':fmtRk(lc.ltv));
+  $set('lc-kpi-inv',   fmtRk(lc.inv));
+  $set('lc-kpi-leads', lc.leads>0?lc.leads:'—');
+  $set('lc-kpi-sql',   lc.sql>0?lc.sql:'—');
+  $set('lc-kpi-cont',  lc.cont>0?lc.cont:'—');
+  $set('lc-kpi-ltv',   fmtRk(lc.ltv));
   $set('lc-kpi-inv-d',   lcp?deltaHtml(lc.inv,lcp.inv):'');
   $set('lc-kpi-leads-d', lcp?deltaHtml(lc.leads,lcp.leads):'');
   $set('lc-kpi-sql-d',   lcp?deltaHtml(lc.sql,lcp.sql):'');
@@ -832,11 +927,11 @@ function updateAllKPIs() {
 
   // Legal Ética
   const le=calcLE(per,gran), lep=pp?calcLE(pp,gran):null;
-  $set('le-kpi-inv',   isTodos?'R$ 12,8k':fmtRk(le.inv));
-  $set('le-kpi-leads', isTodos?'1.231':(le.leads>0?le.leads:'—'));
-  $set('le-kpi-sql',   isTodos?'47':(le.sql>0?le.sql:'—'));
-  $set('le-kpi-cont',  isTodos?'9':(le.cont>0?le.cont:'—'));
-  $set('le-kpi-ltv',   isTodos?'R$ 54k':fmtRk(le.ltv));
+  $set('le-kpi-inv',   fmtRk(le.inv));
+  $set('le-kpi-leads', le.leads>0?le.leads:'—');
+  $set('le-kpi-sql',   le.sql>0?le.sql:'—');
+  $set('le-kpi-cont',  le.cont>0?le.cont:'—');
+  $set('le-kpi-ltv',   fmtRk(le.ltv));
   $set('le-kpi-inv-d',   lep?deltaHtml(le.inv,lep.inv):'');
   $set('le-kpi-leads-d', lep?deltaHtml(le.leads,lep.leads):'');
   $set('le-kpi-sql-d',   lep?deltaHtml(le.sql,lep.sql):'');
@@ -845,21 +940,34 @@ function updateAllKPIs() {
 
   // Vigna Tax
   const tx=calcTAX(per,gran), txp=pp?calcTAX(pp,gran):null;
-  $set('tax-kpi-inv',   isTodos?'R$ 5,5k':fmtRk(tx.inv));
-  $set('tax-kpi-leads', isTodos?'178':(tx.leads>0?tx.leads:'—'));
-  $set('tax-kpi-cont',  isTodos?'1':(tx.cont>0?tx.cont:'—'));
+  $set('tax-kpi-inv',   fmtRk(tx.inv));
+  $set('tax-kpi-leads', tx.leads>0?tx.leads:'—');
+  $set('tax-kpi-cont',  tx.cont>0?tx.cont:'—');
   $set('tax-kpi-inv-d',   txp?deltaHtml(tx.inv,txp.inv):'');
   $set('tax-kpi-leads-d', txp?deltaHtml(tx.leads,txp.leads):'');
   $set('tax-kpi-cont-d',  txp?deltaHtml(tx.cont,txp.cont):'');
 
   // Vigna A.A
   const aa=calcAA(per,gran), aap=pp?calcAA(pp,gran):null;
-  $set('aa-kpi-inv',   isTodos?'R$ 3,4k':fmtRk(aa.inv));
+  $set('aa-kpi-inv',   fmtRk(aa.inv));
   $set('aa-kpi-inv-d', aap?deltaHtml(aa.inv,aap.inv):'');
+
+  // Compliance Control
+  const cc=calcCC(per,gran), ccp=pp?calcCC(pp,gran):null;
+  $set('cc-kpi-inv',   fmtRk(cc.inv));
+  $set('cc-kpi-leads', cc.leads>0?cc.leads:'—');
+  $set('cc-kpi-sql',   cc.sql>0?cc.sql:'—');
+  $set('cc-kpi-cont',  cc.cont>0?cc.cont:'—');
+  $set('cc-kpi-ltv',   fmtRk(cc.ltv));
+  $set('cc-kpi-inv-d',   ccp?deltaHtml(cc.inv,ccp.inv):'');
+  $set('cc-kpi-leads-d', ccp?deltaHtml(cc.leads,ccp.leads):'');
+  $set('cc-kpi-sql-d',   ccp?deltaHtml(cc.sql,ccp.sql):'');
+  $set('cc-kpi-cont-d',  ccp?deltaHtml(cc.cont,ccp.cont):'');
+  $set('cc-kpi-ltv-d',   ccp?deltaHtml(cc.ltv,ccp.ltv):'');
 
   // Period badge labels
   const lbl={mensal:'por mês',trimestral:'por trimestre',anual:'por ano'}[gran];
-  $set('lc-badge',lbl); $set('le-badge',lbl);
+  $set('lc-badge',lbl); $set('le-badge',lbl); $set('cc-badge',lbl);
 
   // Context bar
   updateContextBar();
@@ -883,8 +991,9 @@ function updatePizzaChart() {
   const per = activePeriod, gran = activeGran;
   const lc = calcLC(per, gran), le = calcLE(per, gran);
   const tx = calcTAX(per, gran), aa = calcAA(per, gran);
+  const cc = calcCC(per, gran);
   const c = charts['g-pizza']; if (!c) return;
-  c.data.datasets[0].data = [lc.inv, le.inv, tx.inv, aa.inv];
+  c.data.datasets[0].data = [lc.inv, le.inv, tx.inv, aa.inv, cc.inv];
   c.update();
   const sub = document.getElementById('pizza-subtitle');
   if (sub) sub.textContent = per === 'todos' ? '(histórico)' : `(${per})`;
@@ -914,7 +1023,7 @@ function cm(r,g,b,a) { return {r,g,b,full:a}; }
 
 // Update bar chart highlights without recreating the chart
 // Fix: compare labels directly (not via matchesPeriod, which would need raw month strings)
-const BAR_CHARTS = ['g-invMensal','g-contratos','g-leads-contratos','lc-funil','lc-inv-lucro','lc-conv','le-funil','le-inv-lucro','le-contratos','tax-funil','aa-receita'];
+const BAR_CHARTS = ['g-invMensal','g-contratos','g-leads-contratos','lc-funil','lc-inv-lucro','lc-conv','le-funil','le-inv-lucro','le-contratos','tax-funil','aa-receita','cc-funil','cc-inv-lucro','cc-conv'];
 
 function updateChartHighlights() {
   const per = activePeriod;
@@ -938,25 +1047,34 @@ function updateChartHighlights() {
 // ══════════════════════════════════════════════
 function renderCharts() {
   const gran = activeGran;
-  const lcD=aggLC(gran), leD=aggLE(gran), taxD=aggTAX(gran), aaD=aggAA(gran);
+  const lcD=aggLC(gran), leD=aggLE(gran), taxD=aggTAX(gran), aaD=aggAA(gran), ccD=aggCC(gran);
 
   // ── VISÃO GERAL ──────────────────────────────
-  const gLbls = lcD.map(d=>d.mes);
+  const gLbls = [...new Set([...lcD.map(d=>d.mes), ...ccD.map(d=>d.mes)])];
   const taxInv = gLbls.map(l => { const t=taxD.find(x=>x.mes===l); return t?t.investimento:0; });
   const aaInv  = gLbls.map(l => { const a=aaD.find(x=>x.mes===l);  return a?a.receita_ads:0;  });
+  const lcInv  = gLbls.map(l => { const d=lcD.find(x=>x.mes===l);  return d?d.investimento:0; });
+  const leInv  = gLbls.map(l => { const d=leD.find(x=>x.mes===l);  return d?d.investimento:0; });
+  const ccInv  = gLbls.map(l => { const d=ccD.find(x=>x.mes===l);  return d?d.investimento:0; });
+  const lcCont = gLbls.map(l => { const d=lcD.find(x=>x.mes===l);  return d?d.contratos:0; });
+  const leCont = gLbls.map(l => { const d=leD.find(x=>x.mes===l);  return d?d.contratos:0; });
+  const ccCont = gLbls.map(l => { const d=ccD.find(x=>x.mes===l);  return d?d.contratos:0; });
 
   mkChart('g-invMensal',{type:'bar',data:{labels:gLbls,datasets:[
-    {label:'Legal Control',data:lcD.map(d=>d.investimento), backgroundColor:fullColors(lcD,249,115,22,.8), borderRadius:4,_cm:cm(249,115,22,.8)},
-    {label:'Legal Ética',  data:leD.map(d=>d.investimento), backgroundColor:fullColors(leD,239,68,68,.8),  borderRadius:4,_cm:cm(239,68,68,.8)},
+    {label:'Legal Control',data:lcInv, backgroundColor:fullColors(gLbls,249,115,22,.8), borderRadius:4,_cm:cm(249,115,22,.8)},
+    {label:'Legal Ética',  data:leInv, backgroundColor:fullColors(gLbls,239,68,68,.8),  borderRadius:4,_cm:cm(239,68,68,.8)},
     {label:'Vigna Tax',    data:taxInv,                      backgroundColor:fullColors(gLbls,234,179,8,.8),borderRadius:4,_cm:cm(234,179,8,.8)},
     {label:'Vigna A.A',    data:aaInv,                       backgroundColor:fullColors(gLbls,29,78,216,.8),borderRadius:4,_cm:cm(29,78,216,.8)},
+    {label:'Compliance Control',data:ccInv,                  backgroundColor:fullColors(gLbls,14,165,233,.8),borderRadius:4,_cm:cm(14,165,233,.8)},
   ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}});
 
-  mkChart('g-pizza',{type:'doughnut',data:{labels:['Legal Control','Legal Ética','Vigna Tax','Vigna A.A'],datasets:[{data:[21012.93,12782.6,5497.94,3436.23],backgroundColor:['rgba(249,115,22,.85)','rgba(239,68,68,.85)','rgba(234,179,8,.85)','rgba(29,78,216,.85)'],borderColor:'rgba(255,255,255,0.05)',borderWidth:2}]},options:{cutout:'65%',plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:ctx=>' R$ '+Math.round(ctx.parsed).toLocaleString('pt-BR')}}}}});
+  const pizzaTodos = {lc:calcLC('todos','mensal'),le:calcLE('todos','mensal'),tx:calcTAX('todos','mensal'),aa:calcAA('todos','mensal'),cc:calcCC('todos','mensal')};
+  mkChart('g-pizza',{type:'doughnut',data:{labels:['Legal Control','Legal Ética','Vigna Tax','Vigna A.A','Compliance Control'],datasets:[{data:[pizzaTodos.lc.inv,pizzaTodos.le.inv,pizzaTodos.tx.inv,pizzaTodos.aa.inv,pizzaTodos.cc.inv],backgroundColor:['rgba(249,115,22,.85)','rgba(239,68,68,.85)','rgba(234,179,8,.85)','rgba(29,78,216,.85)','rgba(14,165,233,.85)'],borderColor:'rgba(255,255,255,0.05)',borderWidth:2}]},options:{cutout:'65%',plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:ctx=>' R$ '+Math.round(ctx.parsed).toLocaleString('pt-BR')}}}}});
 
   mkChart('g-contratos',{type:'bar',data:{labels:gLbls,datasets:[
-    {label:'Legal Control',data:lcD.map(d=>d.contratos),backgroundColor:fullColors(lcD,249,115,22,.9),borderRadius:4,_cm:cm(249,115,22,.9)},
-    {label:'Legal Ética',  data:leD.map(d=>d.contratos),backgroundColor:fullColors(leD,239,68,68,.9), borderRadius:4,_cm:cm(239,68,68,.9)},
+    {label:'Legal Control',data:lcCont,backgroundColor:fullColors(gLbls,249,115,22,.9),borderRadius:4,_cm:cm(249,115,22,.9)},
+    {label:'Legal Ética',  data:leCont,backgroundColor:fullColors(gLbls,239,68,68,.9), borderRadius:4,_cm:cm(239,68,68,.9)},
+    {label:'Compliance Control',data:ccCont,backgroundColor:fullColors(gLbls,14,165,233,.9),borderRadius:4,_cm:cm(14,165,233,.9)},
   ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{stepSize:1}}},responsive:true}});
 
   mkChart('g-leads-contratos',{type:'bar',data:{labels:gLbls,datasets:[
@@ -1023,6 +1141,25 @@ function renderCharts() {
 
   mkChart('aa-receita',{type:'bar',data:{labels:aaD.map(d=>d.mes),datasets:[{label:'Receita Ads (R$)',data:aaD.map(d=>d.receita_ads),backgroundColor:fullColors(aaD,29,78,216,.8),borderRadius:6,_cm:cm(29,78,216,.8)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(1)+'k'}}},responsive:true}});
 
+  // ── COMPLIANCE CONTROL ────────────────────────
+  const ccLbls = ccD.map(d=>d.mes);
+  mkChart('cc-funil',{type:'bar',data:{labels:ccLbls,datasets:[
+    {label:'Leads',    data:ccD.map(d=>d.leads),    backgroundColor:fullColors(ccD,14,165,233,.3),borderRadius:4,_cm:cm(14,165,233,.3)},
+    {label:'MQL',      data:ccD.map(d=>d.mql),      backgroundColor:fullColors(ccD,14,165,233,.6),borderRadius:4,_cm:cm(14,165,233,.6)},
+    {label:'SQL',      data:ccD.map(d=>d.sql),      backgroundColor:fullColors(ccD,14,165,233,.9),borderRadius:4,_cm:cm(14,165,233,.9)},
+    {label:'Contratos',data:ccD.map(d=>d.contratos),backgroundColor:fullColors(ccD,14,165,233,1), borderRadius:4,_cm:cm(14,165,233,1)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
+  mkChart('cc-inv-lucro',{type:'bar',data:{labels:ccLbls,datasets:[
+    {label:'Investimento', data:ccD.map(d=>d.investimento),backgroundColor:fullColors(ccD,14,165,233,.5),borderRadius:4,_cm:cm(14,165,233,.5)},
+    {label:'LTV Projetado',data:ccD.map(d=>d.lucro),        backgroundColor:fullColors(ccD,14,165,233,.9),borderRadius:4,_cm:cm(14,165,233,.9)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+(v/1000).toFixed(0)+'k'}}},responsive:true}});
+
+  mkChart('cc-custo-lead',{type:'line',data:{labels:ccLbls,datasets:[{label:'R$/Lead',...lineOpts('rgba(14,165,233,1)','rgba(14,165,233,.1)'),data:ccD.map(d=>d.custo_lead)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+Math.round(v)}}},responsive:true}});
+  mkChart('cc-custo-sql', {type:'line',data:{labels:ccLbls,datasets:[{label:'R$/SQL',...lineOpts('rgba(14,165,233,1)','rgba(14,165,233,.15)'),data:ccD.map(d=>d.custo_sql)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>'R$'+Math.round(v)}}},responsive:true}});
+
+  mkChart('cc-conv',{type:'bar',data:{labels:ccLbls,datasets:[{label:'Lead→Contrato %',data:ccD.map(d=>d.leads>0?+((d.contratos/d.leads)*100).toFixed(1):0),backgroundColor:fullColors(ccD,14,165,233,.8),borderRadius:4,_cm:cm(14,165,233,.8)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>v+'%'}}},responsive:true}});
+
   // Apply any active period highlight
   if (activePeriod !== 'todos') updateChartHighlights();
 }
@@ -1086,24 +1223,30 @@ function renderAATable() {
   });
 }
 
+function renderCCTable() {
+  const rows = tableRows(CC, activePeriod, activeGran);
+  $set('cc-th-per', thPer());
+  const body = document.getElementById('cc-table-body'); body.innerHTML='';
+  let t={inv:0,leads:0,mql:0,sql:0,cont:0,lucro:0};
+  rows.forEach(d=>{
+    t.inv+=d.investimento;t.leads+=d.leads;t.mql+=d.mql;t.sql+=d.sql;t.cont+=d.contratos;t.lucro+=d.lucro;
+    body.innerHTML+=`<tr><td>${d.mes}</td><td class="num">${fmtR(d.investimento)}</td><td class="num">${dash(d.leads)}</td><td class="num">${dash(d.mql)}</td><td class="num">${dash(d.sql)}</td><td class="num">${d.contratos?'<span class="positive">'+d.contratos+'</span>':'—'}</td><td class="num">${fmtD(d.custo_lead)}</td><td class="num">${fmtD(d.custo_sql)}</td><td class="num">${d.lucro?'<span class="positive">'+fmtR(d.lucro)+'</span>':'—'}</td></tr>`;
+  });
+  const tCL=t.leads>0?t.inv/t.leads:0, tCS=t.sql>0?t.inv/t.sql:0;
+  body.innerHTML+=`<tr class="total-row"><td>TOTAL</td><td class="num">${fmtR(t.inv)}</td><td class="num">${t.leads||'—'}</td><td class="num">${t.mql||'—'}</td><td class="num">${t.sql||'—'}</td><td class="num positive">${t.cont||'—'}</td><td class="num">${fmtD(tCL)}</td><td class="num">${fmtD(tCS)}</td><td class="num positive">${t.lucro?fmtR(t.lucro):'—'}</td></tr>`;
+}
+
 function renderGeralTable() {
   const per=activePeriod, gran=activeGran;
-  const lc=calcLC(per,gran), le=calcLE(per,gran), tx=calcTAX(per,gran), aa=calcAA(per,gran);
+  const lc=calcLC(per,gran), le=calcLE(per,gran), tx=calcTAX(per,gran), aa=calcAA(per,gran), cc=calcCC(per,gran);
   const resumo=[
     {nome:'Legal Control',inv:lc.inv,  cont:lc.cont,  ltv:lc.ltv,  cor:'#f97316'},
     {nome:'Legal Ética',  inv:le.inv,  cont:le.cont,  ltv:le.ltv,  cor:'#ef4444'},
     {nome:'Vigna Tax',    inv:tx.inv,  cont:tx.cont,  ltv:0,       cor:'#eab308'},
     {nome:'Vigna A.A',    inv:aa.inv,  cont:0,        ltv:0,       cor:'#1d4ed8'},
-    {nome:'Compliance',   inv:0,       cont:0,        ltv:0,       cor:'#64748b'},
+    {nome:'Compliance Control', inv:cc.inv, cont:cc.cont, ltv:cc.ltv, cor:'#0ea5e9'},
     {nome:'Legal Hub',    inv:0,       cont:0,        ltv:0,       cor:'#64748b'},
   ];
-  // For 'todos', use stored historical totals to avoid floating-point drift
-  if (per === 'todos') {
-    resumo[0].inv=21012.93; resumo[0].cont=5; resumo[0].ltv=108000;
-    resumo[1].inv=12782.6;  resumo[1].cont=9; resumo[1].ltv=54000;
-    resumo[2].inv=5497.94;  resumo[2].cont=1;
-    resumo[3].inv=3436.23;
-  }
   const totalInv=resumo.reduce((a,b)=>a+b.inv,0);
   const totalCont=resumo.reduce((a,b)=>a+b.cont,0);
   const totalLTV=resumo.reduce((a,b)=>a+b.ltv,0);
@@ -1118,7 +1261,7 @@ function renderGeralTable() {
 }
 
 function renderAllTables() {
-  renderLCTable(); renderLETable(); renderTAXTable(); renderAATable(); renderGeralTable();
+  renderLCTable(); renderLETable(); renderTAXTable(); renderAATable(); renderCCTable(); renderGeralTable();
 }
 
 // ══════════════════════════════════════════════
@@ -1210,7 +1353,7 @@ const root = document.getElementById('view-social');
 // ══════════════════════════════════════════════
 // DADOS
 // ══════════════════════════════════════════════
-const M = ['Jan/25','Fev/25','Mar/25','Abr/25','Mai/25','Jun/25','Jul/25','Ago/25','Set/25','Out/25','Nov/25','Dez/25','Jan/26','Fev/26','Mar/26','Abr/26'];
+const M = ['Jan/25','Fev/25','Mar/25','Abr/25','Mai/25','Jun/25','Jul/25','Ago/25','Set/25','Out/25','Nov/25','Dez/25','Jan/26','Fev/26','Mar/26','Abr/26','Mai/26'];
 
 const LC_IG = [
   {mes:'Jan/25',seg:4430,alcance:13233,imp:20563,eng:254,taxa:1.92,posts:27},
@@ -1229,6 +1372,7 @@ const LC_IG = [
   {mes:'Fev/26',seg:4423,alcance:17450,imp:32509,eng:101,taxa:0.58,posts:2},
   {mes:'Mar/26',seg:4436,alcance:97350,imp:292402,eng:142,taxa:0.15,posts:2},
   {mes:'Abr/26',seg:4435,alcance:33,imp:349,eng:3,taxa:9.09,posts:0},
+  {mes:'Mai/26',seg:4217,alcance:47,imp:285,eng:7,taxa:14.89,posts:0},
 ];
 const LE_IG = [
   {mes:'Jan/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
@@ -1247,6 +1391,7 @@ const LE_IG = [
   {mes:'Fev/26',seg:4822,alcance:313,imp:1058,eng:37,taxa:11.82,posts:3},
   {mes:'Mar/26',seg:4813,alcance:743,imp:3759,eng:116,taxa:15.61,posts:12},
   {mes:'Abr/26',seg:4571,alcance:402,imp:1382,eng:52,taxa:12.94,posts:4},
+  {mes:'Mai/26',seg:4562,alcance:607,imp:2040,eng:44,taxa:7.25,posts:2},
 ];
 const TAX_IG = [
   {mes:'Jan/25',seg:5696,alcance:12766,imp:31153,eng:3106,taxa:24.33,posts:26},
@@ -1291,6 +1436,7 @@ const CC_IG = [
   {mes:'Fev/26',seg:3103,alcance:584,imp:2373,eng:89,taxa:15.24,posts:10},
   {mes:'Mar/26',seg:3095,alcance:1056,imp:4562,eng:143,taxa:13.54,posts:6},
   {mes:'Abr/26',seg:3125,alcance:7826,imp:11644,eng:303,taxa:3.87,posts:2},
+  {mes:'Mai/26',seg:3178,alcance:22968,imp:42006,eng:641,taxa:2.79,posts:5},
 ];
 const LC_LI = [
   {mes:'Jan/25',seg:1460,alcance:688,vis:41,eng:65,taxa:9.45,posts:27},
@@ -1309,6 +1455,7 @@ const LC_LI = [
   {mes:'Fev/26',seg:1590,alcance:584,vis:27,eng:23,taxa:3.94,posts:2},
   {mes:'Mar/26',seg:1594,alcance:471,vis:33,eng:13,taxa:2.76,posts:1},
   {mes:'Abr/26',seg:1593,alcance:149,vis:22,eng:0,taxa:0,posts:0},
+  {mes:'Mai/26',seg:1595,alcance:38,vis:23,eng:0,taxa:0,posts:0},
 ];
 const LE_LI = [
   {mes:'Jan/25',seg:298,alcance:331,vis:3,eng:36,taxa:10.88,posts:27},
@@ -1327,6 +1474,7 @@ const LE_LI = [
   {mes:'Fev/26',seg:314,alcance:130,vis:0,eng:7,taxa:5.38,posts:1},
   {mes:'Mar/26',seg:314,alcance:116,vis:0,eng:6,taxa:5.17,posts:7},
   {mes:'Abr/26',seg:312,alcance:141,vis:2,eng:21,taxa:14.89,posts:3},
+  {mes:'Mai/26',seg:317,alcance:53,vis:0,eng:2,taxa:3.77,posts:2},
 ];
 const TAX_LI = [
   {mes:'Jan/25',seg:876,alcance:1823,vis:49,eng:150,taxa:8.23,posts:26},
@@ -1371,6 +1519,45 @@ const CC_LI = [
   {mes:'Fev/26',seg:1174,alcance:355,vis:13,eng:14,taxa:3.94,posts:11},
   {mes:'Mar/26',seg:1174,alcance:395,vis:27,eng:13,taxa:3.29,posts:12},
   {mes:'Abr/26',seg:1173,alcance:247,vis:16,eng:4,taxa:1.62,posts:2},
+  {mes:'Mai/26',seg:1181,alcance:2659,vis:14,eng:65,taxa:2.44,posts:7},
+];
+const LH_IG = [
+  {mes:'Jan/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Fev/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Mar/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Abr/25',seg:238,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Mai/25',seg:238,alcance:956,imp:4901,eng:198,taxa:20.71,posts:28},
+  {mes:'Jun/25',seg:248,alcance:995,imp:4401,eng:193,taxa:19.40,posts:25},
+  {mes:'Jul/25',seg:247,alcance:753,imp:5175,eng:216,taxa:28.69,posts:27},
+  {mes:'Ago/25',seg:254,alcance:1351,imp:6008,eng:211,taxa:15.62,posts:22},
+  {mes:'Set/25',seg:255,alcance:773,imp:3212,eng:107,taxa:13.84,posts:16},
+  {mes:'Out/25',seg:253,alcance:540,imp:1675,eng:75,taxa:13.89,posts:11},
+  {mes:'Nov/25',seg:254,alcance:464,imp:2001,eng:91,taxa:19.61,posts:12},
+  {mes:'Dez/25',seg:254,alcance:446,imp:1762,eng:61,taxa:13.68,posts:11},
+  {mes:'Jan/26',seg:252,alcance:533,imp:2640,eng:91,taxa:17.07,posts:14},
+  {mes:'Fev/26',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Mar/26',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Abr/26',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Mai/26',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+];
+const LH_LI = [
+  {mes:'Jan/25',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
+  {mes:'Fev/25',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
+  {mes:'Mar/25',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
+  {mes:'Abr/25',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
+  {mes:'Mai/25',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
+  {mes:'Jun/25',seg:18,alcance:541,vis:2,eng:26,taxa:4.81,posts:25},
+  {mes:'Jul/25',seg:20,alcance:351,vis:7,eng:18,taxa:5.13,posts:27},
+  {mes:'Ago/25',seg:22,alcance:311,vis:7,eng:30,taxa:9.65,posts:27},
+  {mes:'Set/25',seg:23,alcance:253,vis:2,eng:29,taxa:11.46,posts:17},
+  {mes:'Out/25',seg:23,alcance:176,vis:1,eng:20,taxa:11.36,posts:12},
+  {mes:'Nov/25',seg:23,alcance:86,vis:0,eng:12,taxa:13.95,posts:3},
+  {mes:'Dez/25',seg:24,alcance:76,vis:2,eng:6,taxa:7.89,posts:11},
+  {mes:'Jan/26',seg:24,alcance:56,vis:0,eng:2,taxa:3.57,posts:5},
+  {mes:'Fev/26',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
+  {mes:'Mar/26',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
+  {mes:'Abr/26',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
+  {mes:'Mai/26',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
 ];
 
 // ══════════════════════════════════════════════
@@ -1448,7 +1635,7 @@ function calcIG(arr, period, gran) {
 
 function calcLI(arr, period, gran) {
   if (period === 'todos') {
-    const last = arr[arr.length - 1];
+    const last = arr.filter(d => d.seg > 0).slice(-1)[0];
     if (!last) return null;
     return { seg: last.seg, alcance: last.alcance, vis: last.vis||0, eng: last.eng, taxa: last.taxa, posts: last.posts, label: last.mes };
   }
@@ -1545,6 +1732,7 @@ function updateAllKPIs() {
   updateBrandIG('lc-ig', LC_IG); updateBrandLI('lc-li', LC_LI);
   updateBrandIG('le-ig', LE_IG); updateBrandLI('le-li', LE_LI);
   updateBrandIG('cc-ig', CC_IG); updateBrandLI('cc-li', CC_LI);
+  updateBrandIG('lh-ig', LH_IG); updateBrandLI('lh-li', LH_LI);
   updateContextBar();
 }
 
@@ -1583,6 +1771,7 @@ const BAR_CHARTS = [
   'tax-ig-alcance','tax-ig-eng','tax-li-alcance',
   'aa-ig-alcance','aa-ig-eng',  'aa-li-alcance',
   'cc-ig-alcance','cc-ig-eng',  'cc-li-alcance',
+  'lh-ig-alcance','lh-ig-eng',  'lh-li-alcance',
 ];
 
 function updateChartHighlights() {
@@ -1610,6 +1799,10 @@ function renderCharts() {
   const leIgM    = leIgRows.map(d => d.mes);
   const ccIgM    = CC_IG.map(d => d.mes);
   const ccLiM    = CC_LI.map(d => d.mes);
+  const lhIgRows = LH_IG.filter(d => d.seg > 0);
+  const lhIgM    = lhIgRows.map(d => d.mes);
+  const lhLiRows = LH_LI.filter(d => d.seg > 0);
+  const lhLiM    = lhLiRows.map(d => d.mes);
 
   // ── VIGNA A.A ────────────────────────────────
   mkChart('aa-ig-seg',{type:'line',data:{labels:AA_IG.map(d=>d.mes),datasets:[{label:'Seguidores',...lnO('rgba(29,78,216,1)','rgba(29,78,216,.12)'),data:AA_IG.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
@@ -1681,6 +1874,20 @@ function renderCharts() {
     {label:'Engajamentos', data:CC_LI.map(d=>d.eng),    backgroundColor:fullC(ccLiM.length,56,189,248,.85),borderRadius:4,_cm:cm(56,189,248,.85)},
   ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
 
+  // ── LEGAL HUB (IG começa Abr/25, LI começa Jun/25) ───
+  mkChart('lh-ig-seg',{type:'line',data:{labels:lhIgM,datasets:[{label:'Seguidores',...lnO('rgba(100,116,139,1)','rgba(100,116,139,.12)'),data:lhIgRows.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('lh-ig-alcance',{type:'bar',data:{labels:lhIgM,datasets:[
+    {label:'Alcance',   data:lhIgRows.map(d=>d.alcance),backgroundColor:fullC(lhIgM.length,100,116,139,.55),borderRadius:4,_cm:cm(100,116,139,.55)},
+    {label:'Impressões',data:lhIgRows.map(d=>d.imp),    backgroundColor:fullC(lhIgM.length,100,116,139,.2), borderRadius:4,_cm:cm(100,116,139,.2)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+  mkChart('lh-ig-eng',{type:'bar',data:{labels:lhIgM,datasets:[{label:'Engajamentos',data:lhIgRows.map(d=>d.eng),backgroundColor:fullC(lhIgM.length,236,72,153,.75),borderRadius:4,_cm:cm(236,72,153,.75)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('lh-ig-taxa',{type:'line',data:{labels:lhIgM,datasets:[{label:'Taxa Eng. %',...lnO('rgba(251,146,60,1)','rgba(251,146,60,.1)'),data:lhIgRows.map(d=>d.taxa)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>v+'%'}}},responsive:true}});
+  mkChart('lh-li-seg',{type:'line',data:{labels:lhLiM,datasets:[{label:'Seguidores',...lnO('rgba(14,165,233,1)','rgba(14,165,233,.12)'),data:lhLiRows.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('lh-li-alcance',{type:'bar',data:{labels:lhLiM,datasets:[
+    {label:'Alcance',      data:lhLiRows.map(d=>d.alcance),backgroundColor:fullC(lhLiM.length,14,165,233,.55),borderRadius:4,_cm:cm(14,165,233,.55)},
+    {label:'Engajamentos', data:lhLiRows.map(d=>d.eng),    backgroundColor:fullC(lhLiM.length,56,189,248,.85),borderRadius:4,_cm:cm(56,189,248,.85)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
   // Apply highlight if period already selected
   if (activePeriod !== 'todos') updateChartHighlights();
 }
@@ -1724,6 +1931,7 @@ function renderAllTables() {
   renderIGTable('lc-ig-table', LC_IG); renderLITable('lc-li-table', LC_LI);
   renderIGTable('le-ig-table', LE_IG); renderLITable('le-li-table', LE_LI);
   renderIGTable('cc-ig-table', CC_IG); renderLITable('cc-li-table', CC_LI);
+  renderIGTable('lh-ig-table', LH_IG); renderLITable('lh-li-table', LH_LI);
 }
 
 // ══════════════════════════════════════════════
@@ -1824,8 +2032,8 @@ window.__socialOnShow = () => Object.values(charts).forEach(c => c && c.resize()
 </script>
 <script>
 const VIEWS = {
-  growth: { title:'Growth Marketing Dashboard', sub:'Grupo Vigna · Análise por Marca', date:'Abril 2026', range:'Jun/25 – Mar/26' },
-  social: { title:'Social Media Dashboard', sub:'Grupo Vigna · Instagram & LinkedIn por Marca', date:'Abr/2026', range:'Jan/25 – Abr/26' },
+  growth: { title:'Growth Marketing Dashboard', sub:'Grupo Vigna · Análise por Marca', date:'Julho 2026', range:'Jun/25 – Jul/26' },
+  social: { title:'Social Media Dashboard', sub:'Grupo Vigna · Instagram & LinkedIn por Marca', date:'Mai/2026', range:'Jan/25 – Mai/26' },
 };
 const shownViews = { growth:true, social:false };
 function showView(name) {
@@ -1842,6 +2050,27 @@ function showView(name) {
     if (name === 'social' && window.__socialOnShow) window.__socialOnShow();
   }
 }
+
+function resizeActiveCharts() {
+  const activeView = document.querySelector('.view.active');
+  const name = activeView && activeView.id === 'view-social' ? 'social' : 'growth';
+  if (name === 'growth' && window.__growthOnShow) window.__growthOnShow();
+  if (name === 'social' && window.__socialOnShow) window.__socialOnShow();
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const collapsed = sidebar.classList.toggle('collapsed');
+  localStorage.setItem('vigna-sidebar-collapsed', collapsed ? '1' : '0');
+  document.getElementById('sidebar-toggle-icon').textContent = collapsed ? '›' : '‹';
+  setTimeout(resizeActiveCharts, 260);
+}
+(function(){
+  if (localStorage.getItem('vigna-sidebar-collapsed') === '1') {
+    document.getElementById('sidebar').classList.add('collapsed');
+    document.getElementById('sidebar-toggle-icon').textContent = '›';
+  }
+})();
 </script>
 </body>
 </html>
