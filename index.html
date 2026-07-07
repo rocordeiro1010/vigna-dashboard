@@ -3,55 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Growth Marketing — Grupo Vigna</title>
+<title>Dashboard Growth &amp; Social — Grupo Vigna</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236366f1'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Crect x='5' y='16' width='6' height='12' rx='1.5' fill='white' opacity='.9'/%3E%3Crect x='13' y='10' width='6' height='18' rx='1.5' fill='white' opacity='.9'/%3E%3Crect x='21' y='6' width='6' height='22' rx='1.5' fill='white' opacity='.9'/%3E%3C/svg%3E">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #0f1117; color: #e2e8f0; overflow-x: hidden; }
+html, body { height: 100%; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f1f5f9; color: #0f172a; overflow-x: hidden; }
 
-/* ── HEADER ── */
-header { background: #13161f; border-bottom: 1px solid #2d3748; padding: 22px 40px; display: flex; justify-content: space-between; align-items: center; }
-.brand { display: flex; align-items: center; gap: 14px; }
-.logo { width: 44px; height: 44px; background: linear-gradient(135deg,#6366f1,#8b5cf6); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; color: #fff; }
-header h1 { font-size: 20px; font-weight: 700; color: #f1f5f9; }
-header p  { font-size: 12px; color: #64748b; margin-top: 2px; }
-.header-right { display: flex; align-items: center; gap: 16px; }
+.app { display: flex; min-height: 100vh; }
+
+/* ── SIDEBAR ── */
+.sidebar { width: 240px; flex-shrink: 0; background: #0f172a; padding: 26px 16px; display: flex; flex-direction: column; gap: 4px; }
+.sidebar-brand { display: flex; align-items: center; gap: 12px; padding: 0 10px 26px; }
+.sidebar-brand .logo { width: 38px; height: 38px; background: linear-gradient(135deg,#6366f1,#8b5cf6); border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.sidebar-brand .logo svg { width: 20px; height: 20px; }
+.sidebar-brand strong { display: block; font-size: 14px; color: #f1f5f9; }
+.sidebar-brand span { font-size: 11px; color: #64748b; }
+.nav-item { display: flex; align-items: center; gap: 11px; width: 100%; padding: 11px 14px; border: none; border-radius: 10px; background: none; color: #94a3b8; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .18s; text-align: left; }
+.nav-item:hover { background: rgba(255,255,255,.06); color: #e2e8f0; }
+.nav-item.active { background: linear-gradient(135deg,#6366f1,#8b5cf6); color: #fff; box-shadow: 0 6px 16px rgba(99,102,241,.35); }
+.nav-icon { font-size: 16px; line-height: 1; }
+.sidebar-footer { margin-top: auto; padding: 16px 10px 0; font-size: 11px; color: #475569; border-top: 1px solid rgba(255,255,255,.07); line-height: 1.6; }
+
+/* ── MAIN / TOPBAR ── */
+.main { flex: 1; min-width: 0; }
+.topbar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 22px 40px; display: flex; justify-content: space-between; align-items: center; }
+.topbar h1 { font-size: 19px; font-weight: 700; color: #0f172a; }
+.topbar p { font-size: 12px; color: #64748b; margin-top: 2px; }
 .header-date { text-align: right; font-size: 12px; color: #64748b; }
-.header-date strong { display: block; font-size: 14px; color: #94a3b8; }
-#theme-btn { background: none; border: 1px solid #2d3748; border-radius: 50px; padding: 6px 14px; cursor: pointer; font-size: 13px; color: #94a3b8; transition: all .2s; white-space: nowrap; }
-#theme-btn:hover { border-color: #64748b; color: #f1f5f9; }
+.header-date strong { display: block; font-size: 14px; color: #374151; }
+
+.view { display: none; }
+.view.active { display: block; }
 
 /* ── CONTROL BAR ── */
-.ctrl-bar { background: #13161f; border-bottom: 1px solid #2d3748; padding: 10px 40px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.ctrl-bar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 10px 40px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .period-section { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; overflow: hidden; }
-.ctrl-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #64748b; white-space: nowrap; }
-.chips-wrap { position: relative; flex: 1; min-width: 0; overflow: hidden; }
-.chips-wrap::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 48px; background: linear-gradient(to right, transparent, #13161f); pointer-events: none; }
-.period-chips { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; padding-right: 48px; }
+.ctrl-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #94a3b8; white-space: nowrap; }
+.chips-wrap { position: relative; flex: 1; min-width: 0; display: flex; align-items: center; gap: 4px; overflow: hidden; }
+.chips-scroll-btn { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: #f1f5f9; border: 1px solid #e2e8f0; color: #64748b; font-size: 15px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .18s; padding: 0; }
+.chips-scroll-btn:hover { background: #e2e8f0; color: #0f172a; border-color: #94a3b8; }
+.chips-inner { position: relative; flex: 1; min-width: 0; overflow: hidden; }
+.chips-inner::after { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 32px; background: linear-gradient(to right, transparent, #fff); pointer-events: none; }
+.period-chips { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; }
 .period-chips::-webkit-scrollbar { display: none; }
-.period-chip { padding: 4px 14px; font-size: 12px; font-weight: 600; border: 1px solid #2d3748; border-radius: 20px; background: none; color: #64748b; cursor: pointer; transition: all .18s; white-space: nowrap; flex-shrink: 0; }
-.period-chip:hover { color: #cbd5e1; border-color: #475569; }
+.period-chip { padding: 4px 14px; font-size: 12px; font-weight: 600; border: 1px solid #e2e8f0; border-radius: 20px; background: none; color: #64748b; cursor: pointer; transition: all .18s; white-space: nowrap; flex-shrink: 0; }
+.period-chip:hover { color: #0f172a; border-color: #94a3b8; }
 .period-chip.active { background: #6366f1; border-color: #6366f1; color: #fff; }
 .period-chip.todos { font-weight: 700; }
-.gran-section { display: flex; align-items: center; gap: 2px; background: #0f1117; border-radius: 8px; padding: 3px; flex-shrink: 0; }
+.gran-section { display: flex; align-items: center; gap: 2px; background: #f8fafc; border-radius: 8px; padding: 3px; flex-shrink: 0; }
 .gran-btn { padding: 5px 14px; font-size: 12px; font-weight: 600; border: none; border-radius: 6px; background: none; color: #64748b; cursor: pointer; transition: all .18s; white-space: nowrap; }
-.gran-btn:hover { color: #cbd5e1; }
-.gran-btn.active { background: #1e2535; color: #f1f5f9; }
+.gran-btn:hover { color: #0f172a; }
+.gran-btn.active { background: #e2e8f0; color: #0f172a; }
 
-/* ── CONTEXT BAR (filtro ativo) ── */
-.context-bar { background: rgba(99,102,241,.08); border-bottom: 1px solid rgba(99,102,241,.18); padding: 7px 40px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.context-bar .ctx-text { font-size: 12px; color: #818cf8; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+/* ── CONTEXT BAR ── */
+.context-bar { background: rgba(99,102,241,.06); border-bottom: 1px solid rgba(99,102,241,.15); padding: 7px 40px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.context-bar .ctx-text { font-size: 12px; color: #6366f1; font-weight: 600; display: flex; align-items: center; gap: 8px; }
 .context-bar .ctx-text::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #6366f1; }
-.context-bar .ctx-clear { font-size: 11px; font-weight: 700; color: #64748b; background: none; border: 1px solid #374151; border-radius: 20px; padding: 3px 10px; cursor: pointer; transition: all .18s; }
-.context-bar .ctx-clear:hover { color: #f1f5f9; border-color: #64748b; }
+.context-bar .ctx-clear { font-size: 11px; font-weight: 700; color: #64748b; background: none; border: 1px solid #cbd5e1; border-radius: 20px; padding: 3px 10px; cursor: pointer; transition: all .18s; }
+.context-bar .ctx-clear:hover { color: #0f172a; border-color: #64748b; }
 
 /* ── TABS ── */
-.tab-nav { background: #13161f; border-bottom: 1px solid #2d3748; padding: 0 40px; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.tab-nav { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0 40px; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
 .tab-nav::-webkit-scrollbar { display: none; }
 .tab-btn { padding: 14px 20px; font-size: 13px; font-weight: 600; color: #64748b; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap; transition: all .2s; display: flex; align-items: center; gap: 8px; }
-.tab-btn:hover { color: #cbd5e1; }
-.tab-btn.active { color: #f1f5f9; border-bottom-color: var(--accent,#6366f1); }
+.tab-btn:hover { color: #0f172a; }
+.tab-btn.active { color: #0f172a; border-bottom-color: var(--accent,#6366f1); }
 .tab-dot { width: 8px; height: 8px; border-radius: 50%; }
 
 /* ── PANELS ── */
@@ -66,57 +84,70 @@ header p  { font-size: 12px; color: #64748b; margin-top: 2px; }
 .kpis-5 { grid-template-columns: repeat(5,1fr); }
 .kpis-4 { grid-template-columns: repeat(4,1fr); }
 .kpis-3 { grid-template-columns: repeat(3,1fr); }
-.kpi { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 14px; padding: 22px; position: relative; overflow: visible; transition: transform .22s,box-shadow .22s,border-color .22s; cursor: default; }
+.kpi { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px; position: relative; overflow: visible; transition: transform .22s,box-shadow .22s,border-color .22s; cursor: default; }
 .kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; border-radius: 14px 14px 0 0; }
-.kpi.purple::before { background: linear-gradient(90deg,#6366f1,#8b5cf6); }
-.kpi.green::before  { background: linear-gradient(90deg,#10b981,#34d399); }
-.kpi.blue::before   { background: linear-gradient(90deg,#3b82f6,#60a5fa); }
-.kpi.orange::before { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
-.kpi.purple:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(99,102,241,.22); border-color:rgba(99,102,241,.4); }
-.kpi.green:hover  { transform:translateY(-4px); box-shadow:0 12px 32px rgba(16,185,129,.22); border-color:rgba(16,185,129,.4); }
-.kpi.blue:hover   { transform:translateY(-4px); box-shadow:0 12px 32px rgba(59,130,246,.22); border-color:rgba(59,130,246,.4); }
-.kpi.orange:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(245,158,11,.22); border-color:rgba(245,158,11,.4); }
+.kpi.purple::before   { background: linear-gradient(90deg,#6366f1,#8b5cf6); }
+.kpi.green::before    { background: linear-gradient(90deg,#10b981,#34d399); }
+.kpi.blue::before     { background: linear-gradient(90deg,#3b82f6,#60a5fa); }
+.kpi.orange::before   { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
+.kpi.pink::before     { background: linear-gradient(90deg,#ec4899,#f472b6); }
+.kpi.red::before      { background: linear-gradient(90deg,#ef4444,#f87171); }
+.kpi.yellow::before   { background: linear-gradient(90deg,#eab308,#facc15); }
+.kpi.darkblue::before { background: linear-gradient(90deg,#1d4ed8,#3b82f6); }
+.kpi.purple:hover   { transform:translateY(-4px); box-shadow:0 12px 32px rgba(99,102,241,.18);  border-color:rgba(99,102,241,.4); }
+.kpi.green:hover    { transform:translateY(-4px); box-shadow:0 12px 32px rgba(16,185,129,.18);  border-color:rgba(16,185,129,.4); }
+.kpi.blue:hover     { transform:translateY(-4px); box-shadow:0 12px 32px rgba(59,130,246,.18);  border-color:rgba(59,130,246,.4); }
+.kpi.orange:hover   { transform:translateY(-4px); box-shadow:0 12px 32px rgba(245,158,11,.18);  border-color:rgba(245,158,11,.4); }
+.kpi.pink:hover     { transform:translateY(-4px); box-shadow:0 12px 32px rgba(236,72,153,.18);  border-color:rgba(236,72,153,.4); }
+.kpi.red:hover      { transform:translateY(-4px); box-shadow:0 12px 32px rgba(239,68,68,.18);   border-color:rgba(239,68,68,.4); }
+.kpi.yellow:hover   { transform:translateY(-4px); box-shadow:0 12px 32px rgba(234,179,8,.18);   border-color:rgba(234,179,8,.4); }
+.kpi.darkblue:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(29,78,216,.18);   border-color:rgba(29,78,216,.4); }
 .kpi-icon  { font-size: 24px; margin-bottom: 10px; }
 .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #64748b; }
-.kpi-value { font-size: 28px; font-weight: 800; color: #f1f5f9; margin: 5px 0 2px; line-height: 1; }
+.kpi-value { font-size: 28px; font-weight: 800; color: #0f172a; margin: 5px 0 2px; line-height: 1; }
 .kpi-delta { font-size: 10px; min-height: 16px; margin-bottom: 4px; line-height: 16px; }
-.kpi-sub   { font-size: 11px; color: #475569; }
+.kpi-sub   { font-size: 11px; color: #94a3b8; }
 @keyframes kpiIn { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
 .kpi-in { animation: kpiIn .4s ease forwards; opacity: 0; }
 
 /* ── LAYOUT ── */
 .section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: #6366f1; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
-.section-title::after { content: ''; flex: 1; height: 1px; background: #2d3748; }
+.section-title::after { content: ''; flex: 1; height: 1px; background: #e2e8f0; }
+.section-title.li { color: #0ea5e9; }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px; }
 .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; margin-bottom: 22px; }
 .grid-1 { margin-bottom: 22px; }
 .grid-2>*,.grid-3>* { min-width: 0; }
-.card { background: #1a1f2e; border: 1px solid #2d3748; border-radius: 14px; padding: 22px; min-width: 0; overflow: hidden; transition: border-color .22s,box-shadow .22s; }
-.card:hover { border-color: #3d4f6b; box-shadow: 0 4px 20px rgba(0,0,0,.2); }
-.card-title { font-size: 13px; font-weight: 700; color: #cbd5e1; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.card { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 22px; min-width: 0; overflow: hidden; transition: border-color .22s,box-shadow .22s; }
+.card:hover { border-color: #cbd5e1; box-shadow: 0 4px 20px rgba(15,23,42,.06); }
+.card-title { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: .05em; }
-.badge-purple { background: rgba(99,102,241,.2); color: #818cf8; }
-.badge-green  { background: rgba(16,185,129,.2); color: #34d399; }
+.badge-purple { background: rgba(99,102,241,.12); color: #6366f1; }
+.badge-green  { background: rgba(16,185,129,.12); color: #059669; }
+.badge-blue   { background: rgba(59,130,246,.12); color: #2563eb; }
+.badge-orange { background: rgba(245,158,11,.12); color: #d97706; }
+.badge-li     { background: rgba(14,165,233,.12); color: #0284c7; }
+.badge-ig     { background: rgba(236,72,153,.12); color: #db2777; }
 
 /* ── TABLES ── */
 .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.data-table th { padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #64748b; border-bottom: 1px solid #2d3748; }
-.data-table td { padding: 10px 12px; border-bottom: 1px solid #1e2535; color: #cbd5e1; }
+.data-table th { padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: #64748b; border-bottom: 1px solid #e2e8f0; }
+.data-table td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; color: #374151; }
 .data-table tr:last-child td { border-bottom: none; }
-.data-table tbody tr:not(.total-row):hover td { background: rgba(99,102,241,.05) !important; }
+.data-table tbody tr:not(.total-row):hover td { background: rgba(99,102,241,.04) !important; }
 .num { text-align: right; font-variant-numeric: tabular-nums; }
-.positive { color: #34d399; font-weight: 600; }
-.total-row td { font-weight: 700; color: #f1f5f9; border-top: 1px solid #2d3748 !important; border-bottom: none !important; background: rgba(255,255,255,.02); }
-.bar-wrap { background: #0f1117; border-radius: 4px; height: 5px; margin-top: 5px; }
+.positive { color: #059669; font-weight: 600; }
+.total-row td { font-weight: 700; color: #0f172a; border-top: 1px solid #e2e8f0 !important; border-bottom: none !important; background: rgba(99,102,241,.04); }
+.bar-wrap { background: #e2e8f0; border-radius: 4px; height: 5px; margin-top: 5px; }
 .bar-fill { height: 5px; border-radius: 4px; }
 
 /* ── EMPTY STATE ── */
-.empty-state { text-align: center; padding: 80px 40px; color: #475569; }
+.empty-state { text-align: center; padding: 80px 40px; color: #94a3b8; }
 .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
 .empty-state h3 { font-size: 18px; font-weight: 700; color: #64748b; margin-bottom: 8px; }
 .empty-state p { font-size: 14px; }
 
-footer { text-align: center; padding: 24px; color: #334155; font-size: 12px; border-top: 1px solid #1e2535; margin-top: 8px; }
+footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 12px; border-top: 1px solid #e2e8f0; margin-top: 8px; }
 
 @media(max-width:900px){
   .kpis-5,.kpis-4,.kpis-3 { grid-template-columns: 1fr 1fr; }
@@ -124,87 +155,65 @@ footer { text-align: center; padding: 24px; color: #334155; font-size: 12px; bor
   .container { padding: 20px; }
   .tab-nav,.ctrl-bar,.context-bar { padding-left: 20px; padding-right: 20px; }
   .ctrl-bar { flex-wrap: wrap; }
-  header { padding: 16px 20px; }
+  .topbar { padding: 16px 20px; }
+  .app { flex-direction: column; }
+  .sidebar { width: 100%; flex-direction: row; align-items: center; padding: 12px 16px; overflow-x: auto; }
+  .sidebar-brand { padding: 0 14px 0 0; }
+  .sidebar-footer { display: none; }
 }
-
-/* ── LIGHT MODE ── */
-body.light { background: #f1f5f9; color: #0f172a; }
-body.light header, body.light .ctrl-bar, body.light .tab-nav { background: #fff; border-color: #e2e8f0; }
-body.light .chips-wrap::after { background: linear-gradient(to right, transparent, #fff); }
-body.light header h1 { color: #0f172a; }
-body.light header p, body.light .header-date { color: #64748b; }
-body.light .header-date strong { color: #374151; }
-body.light .ctrl-label { color: #94a3b8; }
-body.light .period-chip { border-color: #e2e8f0; color: #64748b; }
-body.light .period-chip:hover { border-color: #94a3b8; color: #0f172a; }
-body.light .gran-section { background: #f8fafc; }
-body.light .gran-btn { color: #64748b; }
-body.light .gran-btn.active { background: #e2e8f0; color: #0f172a; }
-body.light .context-bar { background: rgba(99,102,241,.06); border-color: rgba(99,102,241,.15); }
-body.light .tab-btn { color: #64748b; }
-body.light .tab-btn:hover { color: #0f172a; }
-body.light .tab-btn.active { color: #0f172a; }
-body.light .kpi { background: #fff; border-color: #e2e8f0; }
-body.light .kpi-value { color: #0f172a; }
-body.light .kpi-label { color: #64748b; }
-body.light .kpi-sub { color: #94a3b8; }
-body.light .card { background: #fff; border-color: #e2e8f0; }
-body.light .card:hover { border-color: #cbd5e1; }
-body.light .card-title { color: #374151; }
-body.light .section-title::after { background: #e2e8f0; }
-body.light .data-table th { color: #64748b; border-color: #e2e8f0; }
-body.light .data-table td { color: #374151; border-color: #f1f5f9; }
-body.light .total-row td { color: #0f172a; background: rgba(99,102,241,.04); }
-body.light .bar-wrap { background: #e2e8f0; }
-body.light footer { color: #94a3b8; border-color: #e2e8f0; }
-body.light #theme-btn { border-color: #e2e8f0; color: #64748b; }
-body.light #theme-btn:hover { border-color: #94a3b8; color: #0f172a; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="brand">
-    <div class="logo">V</div>
-    <div><h1>Growth Marketing Dashboard</h1><p>Grupo Vigna · Análise por Marca</p></div>
-  </div>
-  <div class="header-right">
-    <div class="header-date"><strong>Abril 2026</strong>Jun/25 – Mar/26</div>
-    <button id="theme-btn" onclick="toggleTheme()">Dark</button>
-  </div>
-</header>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo"><svg viewBox="0 0 32 32" fill="none"><rect x="5" y="16" width="6" height="12" rx="1.5" fill="white" opacity=".9"/><rect x="13" y="10" width="6" height="18" rx="1.5" fill="white" opacity=".9"/><rect x="21" y="6" width="6" height="22" rx="1.5" fill="white" opacity=".9"/></svg></div>
+      <div><strong>Grupo Vigna</strong><span>Dashboards</span></div>
+    </div>
+    <button class="nav-item active" data-view="growth" onclick="showView('growth')"><span class="nav-icon">📈</span>Growth Marketing</button>
+    <button class="nav-item" data-view="social" onclick="showView('social')"><span class="nav-icon">📣</span>Social Media</button>
+    <div class="sidebar-footer">Grupo Vigna<br>Dashboard unificado</div>
+  </aside>
 
+  <div class="main">
+    <header class="topbar">
+      <div><h1 id="topbar-title">Growth Marketing Dashboard</h1><p id="topbar-sub">Grupo Vigna · Análise por Marca</p></div>
+      <div class="header-date"><strong id="topbar-date-strong">Abril 2026</strong><span id="topbar-date-range">Jun/25 – Mar/26</span></div>
+    </header>
+
+    <section id="view-growth" class="view active">
 <div class="ctrl-bar">
   <div class="period-section">
     <span class="ctrl-label">Período</span>
     <div class="chips-wrap">
-      <div class="period-chips" id="period-chips"></div>
+      <div class="period-chips" id="gr-period-chips"></div>
     </div>
   </div>
   <div class="gran-section">
-    <button class="gran-btn active" id="gb-mensal"     onclick="setGran('mensal')">Mensal</button>
-    <button class="gran-btn"        id="gb-trimestral" onclick="setGran('trimestral')">Trimestral</button>
-    <button class="gran-btn"        id="gb-anual"      onclick="setGran('anual')">Anual</button>
+    <button class="gran-btn active" id="gr-gb-mensal"     onclick="grSetGran('mensal')">Mensal</button>
+    <button class="gran-btn"        id="gr-gb-trimestral" onclick="grSetGran('trimestral')">Trimestral</button>
+    <button class="gran-btn"        id="gr-gb-anual"      onclick="grSetGran('anual')">Anual</button>
   </div>
 </div>
 
-<div class="context-bar" id="ctx-bar" style="display:none">
-  <span class="ctx-text" id="ctx-text"></span>
-  <button class="ctx-clear" onclick="setPeriod('todos')">✕ Limpar filtro</button>
+<div class="context-bar" id="gr-ctx-bar" style="display:none">
+  <span class="ctx-text" id="gr-ctx-text"></span>
+  <button class="ctx-clear" onclick="grSetPeriod('todos')">✕ Limpar filtro</button>
 </div>
 
 <nav class="tab-nav">
-  <button class="tab-btn active" onclick="switchTab('geral')" style="--accent:#6366f1"><span class="tab-dot" style="background:#6366f1"></span>Visão Geral</button>
-  <button class="tab-btn" onclick="switchTab('lc')"  style="--accent:#f97316"><span class="tab-dot" style="background:#f97316"></span>Legal Control</button>
-  <button class="tab-btn" onclick="switchTab('le')"  style="--accent:#ef4444"><span class="tab-dot" style="background:#ef4444"></span>Legal Ética</button>
-  <button class="tab-btn" onclick="switchTab('tax')" style="--accent:#eab308"><span class="tab-dot" style="background:#eab308"></span>Vigna Tax</button>
-  <button class="tab-btn" onclick="switchTab('aa')"  style="--accent:#1d4ed8"><span class="tab-dot" style="background:#1d4ed8"></span>Vigna A.A</button>
-  <button class="tab-btn" onclick="switchTab('cc')"  style="--accent:#0ea5e9"><span class="tab-dot" style="background:#0ea5e9"></span>Compliance Control</button>
-  <button class="tab-btn" onclick="switchTab('lh')"  style="--accent:#64748b"><span class="tab-dot" style="background:#64748b"></span>Legal Hub</button>
+  <button class="tab-btn active" onclick="grSwitchTab('geral')" style="--accent:#6366f1"><span class="tab-dot" style="background:#6366f1"></span>Visão Geral</button>
+  <button class="tab-btn" onclick="grSwitchTab('lc')"  style="--accent:#f97316"><span class="tab-dot" style="background:#f97316"></span>Legal Control</button>
+  <button class="tab-btn" onclick="grSwitchTab('le')"  style="--accent:#ef4444"><span class="tab-dot" style="background:#ef4444"></span>Legal Ética</button>
+  <button class="tab-btn" onclick="grSwitchTab('tax')" style="--accent:#eab308"><span class="tab-dot" style="background:#eab308"></span>Vigna Tax</button>
+  <button class="tab-btn" onclick="grSwitchTab('aa')"  style="--accent:#1d4ed8"><span class="tab-dot" style="background:#1d4ed8"></span>Vigna A.A</button>
+  <button class="tab-btn" onclick="grSwitchTab('cc')"  style="--accent:#0ea5e9"><span class="tab-dot" style="background:#0ea5e9"></span>Compliance Control</button>
+  <button class="tab-btn" onclick="grSwitchTab('lh')"  style="--accent:#64748b"><span class="tab-dot" style="background:#64748b"></span>Legal Hub</button>
 </nav>
 
 <!-- VISÃO GERAL -->
-<div class="tab-panel active" id="panel-geral"><div class="container">
+<div class="tab-panel active" id="panel-gr-geral"><div class="container">
   <div class="kpis kpis-4">
     <div class="kpi purple"><div class="kpi-icon">💰</div><div class="kpi-label">Total Investido</div><div class="kpi-value" id="g-kpi-inv">R$ 42,7k</div><div class="kpi-delta" id="g-kpi-inv-d"></div><div class="kpi-sub">META + Google + LinkedIn</div></div>
     <div class="kpi blue"  ><div class="kpi-icon">👥</div><div class="kpi-label">Leads Gerados</div><div class="kpi-value" id="g-kpi-leads">1.117</div><div class="kpi-delta" id="g-kpi-leads-d"></div><div class="kpi-sub">Pagos + Orgânicos</div></div>
@@ -231,7 +240,7 @@ body.light #theme-btn:hover { border-color: #94a3b8; color: #0f172a; }
 </div></div>
 
 <!-- LEGAL CONTROL -->
-<div class="tab-panel" id="panel-lc"><div class="container">
+<div class="tab-panel" id="panel-gr-lc"><div class="container">
   <div class="kpis kpis-5">
     <div class="kpi purple"><div class="kpi-icon">💰</div><div class="kpi-label">Investimento</div><div class="kpi-value" id="lc-kpi-inv">R$ 21k</div><div class="kpi-delta" id="lc-kpi-inv-d"></div><div class="kpi-sub">Jun/25 – Mar/26</div></div>
     <div class="kpi blue"  ><div class="kpi-icon">👥</div><div class="kpi-label">Leads</div><div class="kpi-value" id="lc-kpi-leads">359</div><div class="kpi-delta" id="lc-kpi-leads-d"></div><div class="kpi-sub">Pagos + Orgânicos</div></div>
@@ -260,7 +269,7 @@ body.light #theme-btn:hover { border-color: #94a3b8; color: #0f172a; }
 </div></div>
 
 <!-- LEGAL ÉTICA -->
-<div class="tab-panel" id="panel-le"><div class="container">
+<div class="tab-panel" id="panel-gr-le"><div class="container">
   <div class="kpis kpis-5">
     <div class="kpi green" ><div class="kpi-icon">💰</div><div class="kpi-label">Investimento</div><div class="kpi-value" id="le-kpi-inv">R$ 12,8k</div><div class="kpi-delta" id="le-kpi-inv-d"></div><div class="kpi-sub">Jun/25 – Mar/26</div></div>
     <div class="kpi blue"  ><div class="kpi-icon">👥</div><div class="kpi-label">Leads</div><div class="kpi-value" id="le-kpi-leads">1.231</div><div class="kpi-delta" id="le-kpi-leads-d"></div><div class="kpi-sub">Pagos + Orgânicos</div></div>
@@ -288,7 +297,7 @@ body.light #theme-btn:hover { border-color: #94a3b8; color: #0f172a; }
 </div></div>
 
 <!-- VIGNA TAX -->
-<div class="tab-panel" id="panel-tax"><div class="container">
+<div class="tab-panel" id="panel-gr-tax"><div class="container">
   <div class="kpis kpis-4">
     <div class="kpi blue"  ><div class="kpi-icon">💰</div><div class="kpi-label">Investimento</div><div class="kpi-value" id="tax-kpi-inv">R$ 5,5k</div><div class="kpi-delta" id="tax-kpi-inv-d"></div><div class="kpi-sub">Ago/25 – Dez/25</div></div>
     <div class="kpi blue"  ><div class="kpi-icon">👥</div><div class="kpi-label">Leads Gerados</div><div class="kpi-value" id="tax-kpi-leads">178</div><div class="kpi-delta" id="tax-kpi-leads-d"></div><div class="kpi-sub">Set/25 – Jan/26</div></div>
@@ -310,7 +319,7 @@ body.light #theme-btn:hover { border-color: #94a3b8; color: #0f172a; }
 </div></div>
 
 <!-- VIGNA A.A -->
-<div class="tab-panel" id="panel-aa"><div class="container">
+<div class="tab-panel" id="panel-gr-aa"><div class="container">
   <div class="kpis kpis-3">
     <div class="kpi orange"><div class="kpi-icon">💰</div><div class="kpi-label">Investimento Ads</div><div class="kpi-value" id="aa-kpi-inv">R$ 3,4k</div><div class="kpi-delta" id="aa-kpi-inv-d"></div><div class="kpi-sub">Jul/25 – Ago/25</div></div>
     <div class="kpi blue"  ><div class="kpi-icon">🔍</div><div class="kpi-label">Organic Search Total</div><div class="kpi-value">20.859</div><div class="kpi-delta"></div><div class="kpi-sub">Jan/25 – Out/25</div></div>
@@ -331,18 +340,274 @@ body.light #theme-btn:hover { border-color: #94a3b8; color: #0f172a; }
 </div></div>
 
 <!-- COMPLIANCE -->
-<div class="tab-panel" id="panel-cc"><div class="container">
+<div class="tab-panel" id="panel-gr-cc"><div class="container">
   <div class="empty-state"><div class="icon">📋</div><h3>Compliance Control</h3><p>Nenhum dado de marketing registrado ainda.<br>Assim que os dados forem inseridos, aparecerão aqui.</p></div>
 </div></div>
 
 <!-- LEGAL HUB -->
-<div class="tab-panel" id="panel-lh"><div class="container">
+<div class="tab-panel" id="panel-gr-lh"><div class="container">
   <div class="empty-state"><div class="icon">🏛️</div><h3>Legal Hub</h3><p>Nenhum dado de marketing registrado ainda.<br>Assim que os dados forem inseridos, aparecerão aqui.</p></div>
 </div></div>
 
 <footer>Grupo Vigna · Dashboard Growth Marketing · Abril 2026</footer>
+    </section>
+
+    <section id="view-social" class="view">
+<div class="ctrl-bar">
+  <div class="period-section">
+    <span class="ctrl-label">Período</span>
+    <div class="chips-wrap">
+      <button class="chips-scroll-btn" onclick="soScrollChips(-1)" title="Anterior">‹</button>
+      <div class="chips-inner">
+        <div class="period-chips" id="so-period-chips"></div>
+      </div>
+      <button class="chips-scroll-btn" onclick="soScrollChips(1)" title="Próximo">›</button>
+    </div>
+  </div>
+  <div class="gran-section">
+    <button class="gran-btn active" id="so-gb-mensal"     onclick="soSetGran('mensal')">Mensal</button>
+    <button class="gran-btn"        id="so-gb-trimestral" onclick="soSetGran('trimestral')">Trimestral</button>
+    <button class="gran-btn"        id="so-gb-anual"      onclick="soSetGran('anual')">Anual</button>
+  </div>
+</div>
+
+<div class="context-bar" id="so-ctx-bar" style="display:none">
+  <span class="ctx-text" id="so-ctx-text"></span>
+  <button class="ctx-clear" onclick="soSetPeriod('todos')">✕ Limpar filtro</button>
+</div>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="soSwitchTab('aa')"  style="--accent:#1d4ed8"><span class="tab-dot" style="background:#1d4ed8"></span>Vigna A.A</button>
+  <button class="tab-btn"        onclick="soSwitchTab('tax')" style="--accent:#eab308"><span class="tab-dot" style="background:#eab308"></span>Vigna Tax</button>
+  <button class="tab-btn"        onclick="soSwitchTab('lc')"  style="--accent:#f97316"><span class="tab-dot" style="background:#f97316"></span>Legal Control</button>
+  <button class="tab-btn"        onclick="soSwitchTab('le')"  style="--accent:#ef4444"><span class="tab-dot" style="background:#ef4444"></span>Legal Ética</button>
+  <button class="tab-btn"        onclick="soSwitchTab('cc')"  style="--accent:#0ea5e9"><span class="tab-dot" style="background:#0ea5e9"></span>Compliance Control</button>
+  <button class="tab-btn"        onclick="soSwitchTab('lh')"  style="--accent:#64748b"><span class="tab-dot" style="background:#64748b"></span>Legal Hub</button>
+</nav>
+
+<!-- ══ VIGNA A.A ══ -->
+<div class="tab-panel active" id="panel-so-aa"><div class="container">
+  <div class="section-title">Instagram <span class="badge badge-ig" style="margin-left:6px">@vignaaa</span></div>
+  <div class="kpis kpis-4">
+    <div class="kpi darkblue"><div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div><div class="kpi-value" id="aa-ig-kpi-seg">11.555</div><div class="kpi-delta" id="aa-ig-kpi-seg-d"></div><div class="kpi-sub" id="aa-ig-kpi-seg-sub">Abr/26</div></div>
+    <div class="kpi blue">  <div class="kpi-icon">📣</div><div class="kpi-label">Alcance</div>    <div class="kpi-value" id="aa-ig-kpi-alc">12.837</div><div class="kpi-delta" id="aa-ig-kpi-alc-d"></div><div class="kpi-sub">Orgânico</div></div>
+    <div class="kpi green"> <div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos</div><div class="kpi-value" id="aa-ig-kpi-eng">1.859</div><div class="kpi-delta" id="aa-ig-kpi-eng-d"></div><div class="kpi-sub">Curtidas + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng.</div>   <div class="kpi-value" id="aa-ig-kpi-taxa">14,48%</div><div class="kpi-delta" id="aa-ig-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores ao Longo do Tempo <span class="badge badge-ig">IG</span></div><canvas id="aa-ig-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Alcance vs Impressões <span class="badge badge-ig">IG</span></div><canvas id="aa-ig-alcance" height="230"></canvas></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Engajamentos por Mês <span class="badge badge-ig">IG</span></div><canvas id="aa-ig-eng" height="200"></canvas></div>
+    <div class="card"><div class="card-title">Taxa de Engajamento (%) <span class="badge badge-ig">IG</span></div><canvas id="aa-ig-taxa" height="200"></canvas></div>
+  </div>
+
+  <div class="section-title li">LinkedIn <span class="badge badge-li" style="margin-left:6px">Vigna A.A — maior audiência</span></div>
+  <div class="kpis kpis-4">
+    <div class="kpi blue">  <div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div>  <div class="kpi-value" id="aa-li-kpi-seg">50.684</div><div class="kpi-delta" id="aa-li-kpi-seg-d"></div><div class="kpi-sub" id="aa-li-kpi-seg-sub">Abr/26</div></div>
+    <div class="kpi blue">  <div class="kpi-icon">📣</div><div class="kpi-label">Alcance</div>     <div class="kpi-value" id="aa-li-kpi-alc">25.486</div><div class="kpi-delta" id="aa-li-kpi-alc-d"></div><div class="kpi-sub">Impressões orgânicas</div></div>
+    <div class="kpi green"> <div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos</div><div class="kpi-value" id="aa-li-kpi-eng">251</div>   <div class="kpi-delta" id="aa-li-kpi-eng-d"></div><div class="kpi-sub">Reações + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng.</div>   <div class="kpi-value" id="aa-li-kpi-taxa">0,98%</div> <div class="kpi-delta" id="aa-li-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores LinkedIn ao Longo do Tempo <span class="badge badge-li">LI</span></div><canvas id="aa-li-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Alcance e Engajamentos <span class="badge badge-li">LI</span></div><canvas id="aa-li-alcance" height="230"></canvas></div>
+  </div>
+
+  <div class="section-title">Tabela Detalhada — Instagram</div>
+  <div class="card grid-1"><table class="data-table">
+    <thead><tr><th>Mês</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Impressões</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th class="num">Posts</th></tr></thead>
+    <tbody id="aa-ig-table"></tbody>
+  </table></div>
+  <div class="section-title">Tabela Detalhada — LinkedIn</div>
+  <div class="card grid-1"><table class="data-table">
+    <thead><tr><th>Mês</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Visitantes Únicos</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th class="num">Posts</th></tr></thead>
+    <tbody id="aa-li-table"></tbody>
+  </table></div>
+</div></div>
+
+<!-- ══ VIGNA TAX ══ -->
+<div class="tab-panel" id="panel-so-tax"><div class="container">
+  <div class="section-title">Instagram <span class="badge badge-ig" style="margin-left:6px">@vignatax</span></div>
+  <div class="kpis kpis-4">
+    <div class="kpi yellow"><div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div><div class="kpi-value" id="tax-ig-kpi-seg">5.764</div><div class="kpi-delta" id="tax-ig-kpi-seg-d"></div><div class="kpi-sub" id="tax-ig-kpi-seg-sub">Abr/26</div></div>
+    <div class="kpi blue">  <div class="kpi-icon">📣</div><div class="kpi-label">Alcance</div>   <div class="kpi-value" id="tax-ig-kpi-alc">2.175</div><div class="kpi-delta" id="tax-ig-kpi-alc-d"></div><div class="kpi-sub">Orgânico</div></div>
+    <div class="kpi green"> <div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos</div><div class="kpi-value" id="tax-ig-kpi-eng">890</div><div class="kpi-delta" id="tax-ig-kpi-eng-d"></div><div class="kpi-sub">Curtidas + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng.</div> <div class="kpi-value" id="tax-ig-kpi-taxa">40,92%</div><div class="kpi-delta" id="tax-ig-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores ao Longo do Tempo <span class="badge badge-ig">IG</span></div><canvas id="tax-ig-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Alcance vs Impressões <span class="badge badge-ig">IG</span></div><canvas id="tax-ig-alcance" height="230"></canvas></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Engajamentos por Mês <span class="badge badge-ig">IG</span></div><canvas id="tax-ig-eng" height="200"></canvas></div>
+    <div class="card"><div class="card-title">Taxa de Engajamento (%) <span class="badge badge-ig">IG</span></div><canvas id="tax-ig-taxa" height="200"></canvas></div>
+  </div>
+
+  <div class="section-title li">LinkedIn <span class="badge badge-li" style="margin-left:6px">Vigna Tax</span></div>
+  <div class="kpis kpis-4">
+    <div class="kpi blue">  <div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div>  <div class="kpi-value" id="tax-li-kpi-seg">1.013</div><div class="kpi-delta" id="tax-li-kpi-seg-d"></div><div class="kpi-sub" id="tax-li-kpi-seg-sub">Abr/26</div></div>
+    <div class="kpi blue">  <div class="kpi-icon">📣</div><div class="kpi-label">Alcance</div>     <div class="kpi-value" id="tax-li-kpi-alc">546</div>  <div class="kpi-delta" id="tax-li-kpi-alc-d"></div><div class="kpi-sub">Impressões orgânicas</div></div>
+    <div class="kpi green"> <div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos</div><div class="kpi-value" id="tax-li-kpi-eng">19</div>   <div class="kpi-delta" id="tax-li-kpi-eng-d"></div><div class="kpi-sub">Reações + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng.</div>   <div class="kpi-value" id="tax-li-kpi-taxa">3,48%</div><div class="kpi-delta" id="tax-li-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores ao Longo do Tempo <span class="badge badge-li">LI</span></div><canvas id="tax-li-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Alcance e Engajamentos <span class="badge badge-li">LI</span></div><canvas id="tax-li-alcance" height="230"></canvas></div>
+  </div>
+
+  <div class="section-title">Tabela Detalhada — Instagram</div>
+  <div class="card grid-1"><table class="data-table">
+    <thead><tr><th>Mês</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Impressões</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th class="num">Posts</th></tr></thead>
+    <tbody id="tax-ig-table"></tbody>
+  </table></div>
+  <div class="section-title">Tabela Detalhada — LinkedIn</div>
+  <div class="card grid-1"><table class="data-table">
+    <thead><tr><th>Mês</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Visitantes Únicos</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th class="num">Posts</th></tr></thead>
+    <tbody id="tax-li-table"></tbody>
+  </table></div>
+</div></div>
+
+<!-- ══ LEGAL CONTROL ══ -->
+<div class="tab-panel" id="panel-so-lc"><div class="container">
+  <div class="section-title">Instagram <span class="badge badge-ig" style="margin-left:6px">@legalcontrol</span></div>
+  <div class="kpis kpis-4">
+    <div class="kpi orange"><div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div><div class="kpi-value" id="lc-ig-kpi-seg">4.435</div><div class="kpi-delta" id="lc-ig-kpi-seg-d"></div><div class="kpi-sub" id="lc-ig-kpi-seg-sub">Abr/26</div></div>
+    <div class="kpi blue">  <div class="kpi-icon">📣</div><div class="kpi-label">Alcance</div>   <div class="kpi-value" id="lc-ig-kpi-alc">97.350</div><div class="kpi-delta" id="lc-ig-kpi-alc-d"></div><div class="kpi-sub">Orgânico</div></div>
+    <div class="kpi green"> <div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos</div><div class="kpi-value" id="lc-ig-kpi-eng">142</div><div class="kpi-delta" id="lc-ig-kpi-eng-d"></div><div class="kpi-sub">Curtidas + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng.</div> <div class="kpi-value" id="lc-ig-kpi-taxa">0,15%</div><div class="kpi-delta" id="lc-ig-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores ao Longo do Tempo <span class="badge badge-ig">IG</span></div><canvas id="lc-ig-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Alcance vs Impressões <span class="badge badge-ig">IG</span></div><canvas id="lc-ig-alcance" height="230"></canvas></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Engajamentos por Mês <span class="badge badge-ig">IG</span></div><canvas id="lc-ig-eng" height="200"></canvas></div>
+    <div class="card"><div class="card-title">Taxa de Engajamento (%) <span class="badge badge-ig">IG</span></div><canvas id="lc-ig-taxa" height="200"></canvas></div>
+  </div>
+
+  <div class="section-title li">LinkedIn <span class="badge badge-li" style="margin-left:6px">Legal Control</span></div>
+  <div class="kpis kpis-4">
+    <div class="kpi blue">  <div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div>  <div class="kpi-value" id="lc-li-kpi-seg">1.593</div><div class="kpi-delta" id="lc-li-kpi-seg-d"></div><div class="kpi-sub" id="lc-li-kpi-seg-sub">Abr/26</div></div>
+    <div class="kpi blue">  <div class="kpi-icon">📣</div><div class="kpi-label">Alcance</div>     <div class="kpi-value" id="lc-li-kpi-alc">471</div>  <div class="kpi-delta" id="lc-li-kpi-alc-d"></div><div class="kpi-sub">Impressões orgânicas</div></div>
+    <div class="kpi green"> <div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos</div><div class="kpi-value" id="lc-li-kpi-eng">13</div>   <div class="kpi-delta" id="lc-li-kpi-eng-d"></div><div class="kpi-sub">Reações + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng.</div>   <div class="kpi-value" id="lc-li-kpi-taxa">2,76%</div><div class="kpi-delta" id="lc-li-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores ao Longo do Tempo <span class="badge badge-li">LI</span></div><canvas id="lc-li-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Alcance e Engajamentos <span class="badge badge-li">LI</span></div><canvas id="lc-li-alcance" height="230"></canvas></div>
+  </div>
+
+  <div class="section-title">Tabela Detalhada — Instagram</div>
+  <div class="card grid-1"><table class="data-table">
+    <thead><tr><th>Mês</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Impressões</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th class="num">Posts</th></tr></thead>
+    <tbody id="lc-ig-table"></tbody>
+  </table></div>
+  <div class="section-title">Tabela Detalhada — LinkedIn</div>
+  <div class="card grid-1"><table class="data-table">
+    <thead><tr><th>Mês</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Visitantes Únicos</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th class="num">Posts</th></tr></thead>
+    <tbody id="lc-li-table"></tbody>
+  </table></div>
+</div></div>
+
+<!-- ══ LEGAL ÉTICA ══ -->
+<div class="tab-panel" id="panel-so-le"><div class="container">
+  <div class="section-title">Instagram <span class="badge badge-ig" style="margin-left:6px">@legaletica</span></div>
+  <div class="kpis kpis-4">
+    <div class="kpi red">   <div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div><div class="kpi-value" id="le-ig-kpi-seg">4.571</div><div class="kpi-delta" id="le-ig-kpi-seg-d"></div><div class="kpi-sub" id="le-ig-kpi-seg-sub">Abr/26 · Início Ago/25</div></div>
+    <div class="kpi blue">  <div class="kpi-icon">📣</div><div class="kpi-label">Alcance</div>   <div class="kpi-value" id="le-ig-kpi-alc">743</div>  <div class="kpi-delta" id="le-ig-kpi-alc-d"></div><div class="kpi-sub">Orgânico</div></div>
+    <div class="kpi green"> <div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos</div><div class="kpi-value" id="le-ig-kpi-eng">116</div><div class="kpi-delta" id="le-ig-kpi-eng-d"></div><div class="kpi-sub">Curtidas + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng.</div> <div class="kpi-value" id="le-ig-kpi-taxa">15,61%</div><div class="kpi-delta" id="le-ig-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores ao Longo do Tempo <span class="badge badge-ig">IG</span></div><canvas id="le-ig-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Alcance vs Impressões <span class="badge badge-ig">IG</span></div><canvas id="le-ig-alcance" height="230"></canvas></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Engajamentos por Mês <span class="badge badge-ig">IG</span></div><canvas id="le-ig-eng" height="200"></canvas></div>
+    <div class="card"><div class="card-title">Taxa de Engajamento (%) <span class="badge badge-ig">IG</span></div><canvas id="le-ig-taxa" height="200"></canvas></div>
+  </div>
+
+  <div class="section-title li">LinkedIn <span class="badge badge-li" style="margin-left:6px">Legal Ética</span></div>
+  <div class="kpis kpis-4">
+    <div class="kpi blue">  <div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div>  <div class="kpi-value" id="le-li-kpi-seg">312</div>  <div class="kpi-delta" id="le-li-kpi-seg-d"></div><div class="kpi-sub" id="le-li-kpi-seg-sub">Abr/26</div></div>
+    <div class="kpi blue">  <div class="kpi-icon">📣</div><div class="kpi-label">Alcance</div>     <div class="kpi-value" id="le-li-kpi-alc">116</div>  <div class="kpi-delta" id="le-li-kpi-alc-d"></div><div class="kpi-sub">Impressões orgânicas</div></div>
+    <div class="kpi green"> <div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos</div><div class="kpi-value" id="le-li-kpi-eng">6</div>    <div class="kpi-delta" id="le-li-kpi-eng-d"></div><div class="kpi-sub">Reações + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng.</div>   <div class="kpi-value" id="le-li-kpi-taxa">5,17%</div><div class="kpi-delta" id="le-li-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores ao Longo do Tempo <span class="badge badge-li">LI</span></div><canvas id="le-li-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Alcance e Engajamentos <span class="badge badge-li">LI</span></div><canvas id="le-li-alcance" height="230"></canvas></div>
+  </div>
+
+  <div class="section-title">Tabela Detalhada — Instagram</div>
+  <div class="card grid-1"><table class="data-table">
+    <thead><tr><th>Mês</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Impressões</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th class="num">Posts</th></tr></thead>
+    <tbody id="le-ig-table"></tbody>
+  </table></div>
+  <div class="section-title">Tabela Detalhada — LinkedIn</div>
+  <div class="card grid-1"><table class="data-table">
+    <thead><tr><th>Mês</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Visitantes Únicos</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th class="num">Posts</th></tr></thead>
+    <tbody id="le-li-table"></tbody>
+  </table></div>
+</div></div>
+
+<!-- ══ COMPLIANCE CONTROL ══ -->
+<div class="tab-panel" id="panel-so-cc"><div class="container">
+  <div class="section-title">Instagram <span class="badge badge-ig" style="margin-left:6px">@compliancecontrol</span></div>
+  <div class="kpis kpis-4">
+    <div class="kpi blue">  <div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div><div class="kpi-value" id="cc-ig-kpi-seg">3.125</div><div class="kpi-delta" id="cc-ig-kpi-seg-d"></div><div class="kpi-sub" id="cc-ig-kpi-seg-sub">Abr/26 · Início Nov/25</div></div>
+    <div class="kpi blue">  <div class="kpi-icon">📣</div><div class="kpi-label">Alcance</div>   <div class="kpi-value" id="cc-ig-kpi-alc">1.056</div><div class="kpi-delta" id="cc-ig-kpi-alc-d"></div><div class="kpi-sub">Orgânico</div></div>
+    <div class="kpi green"> <div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos</div><div class="kpi-value" id="cc-ig-kpi-eng">143</div><div class="kpi-delta" id="cc-ig-kpi-eng-d"></div><div class="kpi-sub">Curtidas + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng.</div> <div class="kpi-value" id="cc-ig-kpi-taxa">13,54%</div><div class="kpi-delta" id="cc-ig-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores ao Longo do Tempo <span class="badge badge-ig">IG</span></div><canvas id="cc-ig-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Alcance vs Impressões <span class="badge badge-ig">IG</span></div><canvas id="cc-ig-alcance" height="230"></canvas></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Engajamentos por Mês <span class="badge badge-ig">IG</span></div><canvas id="cc-ig-eng" height="200"></canvas></div>
+    <div class="card"><div class="card-title">Taxa de Engajamento (%) <span class="badge badge-ig">IG</span></div><canvas id="cc-ig-taxa" height="200"></canvas></div>
+  </div>
+
+  <div class="section-title li">LinkedIn <span class="badge badge-li" style="margin-left:6px">Compliance Control</span></div>
+  <div class="kpis kpis-4">
+    <div class="kpi blue">  <div class="kpi-icon">👥</div><div class="kpi-label">Seguidores</div>  <div class="kpi-value" id="cc-li-kpi-seg">1.173</div><div class="kpi-delta" id="cc-li-kpi-seg-d"></div><div class="kpi-sub" id="cc-li-kpi-seg-sub">Abr/26 · Início Nov/25</div></div>
+    <div class="kpi blue">  <div class="kpi-icon">📣</div><div class="kpi-label">Alcance</div>     <div class="kpi-value" id="cc-li-kpi-alc">395</div>  <div class="kpi-delta" id="cc-li-kpi-alc-d"></div><div class="kpi-sub">Impressões orgânicas</div></div>
+    <div class="kpi green"> <div class="kpi-icon">❤️</div><div class="kpi-label">Engajamentos</div><div class="kpi-value" id="cc-li-kpi-eng">13</div>   <div class="kpi-delta" id="cc-li-kpi-eng-d"></div><div class="kpi-sub">Reações + Comentários</div></div>
+    <div class="kpi orange"><div class="kpi-icon">📊</div><div class="kpi-label">Taxa Eng.</div>   <div class="kpi-value" id="cc-li-kpi-taxa">3,29%</div><div class="kpi-delta" id="cc-li-kpi-taxa-d"></div><div class="kpi-sub">Engaj. / Alcance</div></div>
+  </div>
+  <div class="grid-2">
+    <div class="card"><div class="card-title">Seguidores ao Longo do Tempo <span class="badge badge-li">LI</span></div><canvas id="cc-li-seg" height="230"></canvas></div>
+    <div class="card"><div class="card-title">Alcance e Engajamentos <span class="badge badge-li">LI</span></div><canvas id="cc-li-alcance" height="230"></canvas></div>
+  </div>
+
+  <div class="section-title">Tabela Detalhada — Instagram</div>
+  <div class="card grid-1"><table class="data-table">
+    <thead><tr><th>Mês</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Impressões</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th class="num">Posts</th></tr></thead>
+    <tbody id="cc-ig-table"></tbody>
+  </table></div>
+  <div class="section-title">Tabela Detalhada — LinkedIn</div>
+  <div class="card grid-1"><table class="data-table">
+    <thead><tr><th>Mês</th><th class="num">Seguidores</th><th class="num">Alcance</th><th class="num">Visitantes Únicos</th><th class="num">Engajamentos</th><th class="num">Taxa Eng.</th><th class="num">Posts</th></tr></thead>
+    <tbody id="cc-li-table"></tbody>
+  </table></div>
+</div></div>
+
+<!-- ══ LEGAL HUB ══ -->
+<div class="tab-panel" id="panel-so-lh"><div class="container">
+  <div class="empty-state"><div class="icon">🏛️</div><h3>Legal Hub</h3><p>Nenhum dado de social media registrado ainda nesta marca.<br>Assim que os dados forem inseridos, aparecerão aqui.</p></div>
+</div></div>
+
+<footer>Grupo Vigna · Dashboard Social Media · Jan/25 – Abr/26</footer>
+    </section>
+  </div>
+</div>
 
 <script>
+(function(){
+const root = document.getElementById('view-growth');
 // ══════════════════════════════════════════════
 // DATA
 // ══════════════════════════════════════════════
@@ -403,13 +668,13 @@ const AA = [
 // ══════════════════════════════════════════════
 // FORMATTERS
 // ══════════════════════════════════════════════
-const fmtR  = v => v > 0 ? 'R$\u00a0' + Math.round(v).toLocaleString('pt-BR') : '—';
+const fmtR  = v => v > 0 ? 'R$ ' + Math.round(v).toLocaleString('pt-BR') : '—';
 const fmtRk = v => {
   if (!v || v <= 0) return '—';
-  if (v >= 1000) return 'R$\u00a0' + (v/1000).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1}) + 'k';
-  return 'R$\u00a0' + Math.round(v).toLocaleString('pt-BR');
+  if (v >= 1000) return 'R$ ' + (v/1000).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1}) + 'k';
+  return 'R$ ' + Math.round(v).toLocaleString('pt-BR');
 };
-const fmtD  = v => v > 0 ? 'R$\u00a0' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
+const fmtD  = v => v > 0 ? 'R$ ' + v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}) : '—';
 const dash  = v => v > 0 ? v : '—';
 
 // ══════════════════════════════════════════════
@@ -543,10 +808,10 @@ function updateAllKPIs() {
 
   // Geral
   const g=calcGeral(per,gran), gp=pp?calcGeral(pp,gran):null;
-  $set('g-kpi-inv',   isTodos?'R$\u00a042,7k':fmtRk(g.inv));
+  $set('g-kpi-inv',   isTodos?'R$ 42,7k':fmtRk(g.inv));
   $set('g-kpi-leads', isTodos?'1.117':(g.leads>0?g.leads.toLocaleString('pt-BR'):'—'));
   $set('g-kpi-cont',  isTodos?'15':(g.cont>0?g.cont:'—'));
-  $set('g-kpi-ltv',   isTodos?'R$\u00a0162k':fmtRk(g.ltv));
+  $set('g-kpi-ltv',   isTodos?'R$ 162k':fmtRk(g.ltv));
   $set('g-kpi-inv-d',   gp?deltaHtml(g.inv,gp.inv):'');
   $set('g-kpi-leads-d', gp?deltaHtml(g.leads,gp.leads):'');
   $set('g-kpi-cont-d',  gp?deltaHtml(g.cont,gp.cont):'');
@@ -554,11 +819,11 @@ function updateAllKPIs() {
 
   // Legal Control
   const lc=calcLC(per,gran), lcp=pp?calcLC(pp,gran):null;
-  $set('lc-kpi-inv',   isTodos?'R$\u00a021k':fmtRk(lc.inv));
+  $set('lc-kpi-inv',   isTodos?'R$ 21k':fmtRk(lc.inv));
   $set('lc-kpi-leads', isTodos?'359':(lc.leads>0?lc.leads:'—'));
   $set('lc-kpi-sql',   isTodos?'50':(lc.sql>0?lc.sql:'—'));
   $set('lc-kpi-cont',  isTodos?'5':(lc.cont>0?lc.cont:'—'));
-  $set('lc-kpi-ltv',   isTodos?'R$\u00a0108k':fmtRk(lc.ltv));
+  $set('lc-kpi-ltv',   isTodos?'R$ 108k':fmtRk(lc.ltv));
   $set('lc-kpi-inv-d',   lcp?deltaHtml(lc.inv,lcp.inv):'');
   $set('lc-kpi-leads-d', lcp?deltaHtml(lc.leads,lcp.leads):'');
   $set('lc-kpi-sql-d',   lcp?deltaHtml(lc.sql,lcp.sql):'');
@@ -567,11 +832,11 @@ function updateAllKPIs() {
 
   // Legal Ética
   const le=calcLE(per,gran), lep=pp?calcLE(pp,gran):null;
-  $set('le-kpi-inv',   isTodos?'R$\u00a012,8k':fmtRk(le.inv));
+  $set('le-kpi-inv',   isTodos?'R$ 12,8k':fmtRk(le.inv));
   $set('le-kpi-leads', isTodos?'1.231':(le.leads>0?le.leads:'—'));
   $set('le-kpi-sql',   isTodos?'47':(le.sql>0?le.sql:'—'));
   $set('le-kpi-cont',  isTodos?'9':(le.cont>0?le.cont:'—'));
-  $set('le-kpi-ltv',   isTodos?'R$\u00a054k':fmtRk(le.ltv));
+  $set('le-kpi-ltv',   isTodos?'R$ 54k':fmtRk(le.ltv));
   $set('le-kpi-inv-d',   lep?deltaHtml(le.inv,lep.inv):'');
   $set('le-kpi-leads-d', lep?deltaHtml(le.leads,lep.leads):'');
   $set('le-kpi-sql-d',   lep?deltaHtml(le.sql,lep.sql):'');
@@ -580,7 +845,7 @@ function updateAllKPIs() {
 
   // Vigna Tax
   const tx=calcTAX(per,gran), txp=pp?calcTAX(pp,gran):null;
-  $set('tax-kpi-inv',   isTodos?'R$\u00a05,5k':fmtRk(tx.inv));
+  $set('tax-kpi-inv',   isTodos?'R$ 5,5k':fmtRk(tx.inv));
   $set('tax-kpi-leads', isTodos?'178':(tx.leads>0?tx.leads:'—'));
   $set('tax-kpi-cont',  isTodos?'1':(tx.cont>0?tx.cont:'—'));
   $set('tax-kpi-inv-d',   txp?deltaHtml(tx.inv,txp.inv):'');
@@ -589,7 +854,7 @@ function updateAllKPIs() {
 
   // Vigna A.A
   const aa=calcAA(per,gran), aap=pp?calcAA(pp,gran):null;
-  $set('aa-kpi-inv',   isTodos?'R$\u00a03,4k':fmtRk(aa.inv));
+  $set('aa-kpi-inv',   isTodos?'R$ 3,4k':fmtRk(aa.inv));
   $set('aa-kpi-inv-d', aap?deltaHtml(aa.inv,aap.inv):'');
 
   // Period badge labels
@@ -601,8 +866,8 @@ function updateAllKPIs() {
 }
 
 function updateContextBar() {
-  const bar  = document.getElementById('ctx-bar');
-  const text = document.getElementById('ctx-text');
+  const bar  = document.getElementById('gr-ctx-bar');
+  const text = document.getElementById('gr-ctx-text');
   const per  = activePeriod, gran = activeGran;
   if (per === 'todos') { bar.style.display = 'none'; return; }
   bar.style.display = 'flex';
@@ -631,13 +896,13 @@ function updatePizzaChart() {
 let charts = {};
 function mkChart(id, cfg) { if(charts[id]) charts[id].destroy(); charts[id]=new Chart(document.getElementById(id),cfg); }
 
-Chart.defaults.color = '#64748b';
-Chart.defaults.borderColor = '#2d3748';
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.borderColor = '#e2e8f0';
 Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
 Chart.defaults.plugins.legend.labels.usePointStyle = true;
 Chart.defaults.plugins.legend.labels.padding = 14;
 
-const gO = { y:{grid:{color:'#1e2535'}}, x:{grid:{display:false}} };
+const gO = { y:{grid:{color:'#e2e8f0'}}, x:{grid:{display:false}} };
 const lineOpts = (c,ca) => ({borderColor:c,backgroundColor:ca,fill:true,tension:.4,pointBackgroundColor:c,pointRadius:4,pointHoverRadius:6});
 
 // Color array with all bars at full opacity (used at render time / when todos)
@@ -846,7 +1111,7 @@ function renderGeralTable() {
   resumo.forEach(r=>{
     const pct=totalInv>0?(r.inv/totalInv*100):0;
     const roi=r.inv>0&&r.ltv>0?Math.round((r.ltv/r.inv-1)*100)+'%':'—';
-    body.innerHTML+=`<tr><td style="font-weight:600;color:#f1f5f9">${r.nome}</td><td class="num">${r.inv>0?fmtR(r.inv):'—'}</td><td class="num">${r.inv>0?pct.toFixed(1)+'%':'—'}</td><td class="num">${r.cont>0?'<span class="positive">'+r.cont+'</span>':'—'}</td><td class="num">${r.ltv>0?'<span class="positive">'+fmtR(r.ltv)+'</span>':'—'}</td><td class="num">${r.ltv>0?'<span class="positive">'+roi+'</span>':'—'}</td><td style="min-width:130px;padding-right:16px"><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${r.cor}"></div></div></td></tr>`;
+    body.innerHTML+=`<tr><td style="font-weight:600;color:#0f172a">${r.nome}</td><td class="num">${r.inv>0?fmtR(r.inv):'—'}</td><td class="num">${r.inv>0?pct.toFixed(1)+'%':'—'}</td><td class="num">${r.cont>0?'<span class="positive">'+r.cont+'</span>':'—'}</td><td class="num">${r.ltv>0?'<span class="positive">'+fmtR(r.ltv)+'</span>':'—'}</td><td class="num">${r.ltv>0?'<span class="positive">'+roi+'</span>':'—'}</td><td style="min-width:130px;padding-right:16px"><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${r.cor}"></div></div></td></tr>`;
   });
   const totalROI=totalInv>0&&totalLTV>0?Math.round((totalLTV/totalInv-1)*100)+'%':'—';
   body.innerHTML+=`<tr class="total-row"><td>TOTAL</td><td class="num">${fmtR(totalInv)}</td><td class="num">100%</td><td class="num positive">${totalCont||'—'}</td><td class="num positive">${totalLTV>0?fmtR(totalLTV):'—'}</td><td class="num positive">${totalROI}</td><td></td></tr>`;
@@ -862,16 +1127,16 @@ function renderAllTables() {
 let activeGran = 'mensal', activePeriod = 'todos';
 
 function renderPeriodChips() {
-  const chips = document.getElementById('period-chips');
+  const chips = document.getElementById('gr-period-chips');
   chips.innerHTML = getPeriodList(activeGran).map(p =>
-    `<button class="period-chip${p==='todos'?' todos':''}${p===activePeriod?' active':''}" onclick="setPeriod('${p}')">${p==='todos'?'Todos':p}</button>`
+    `<button class="period-chip${p==='todos'?' todos':''}${p===activePeriod?' active':''}" onclick="grSetPeriod('${p}')">${p==='todos'?'Todos':p}</button>`
   ).join('');
 }
 
 function setGran(g) {
   if (g === activeGran) return;
   activeGran = g; activePeriod = 'todos';
-  document.querySelectorAll('.gran-btn').forEach((b,_,arr) => b.classList.toggle('active', b.id==='gb-'+g));
+  root.querySelectorAll('.gran-btn').forEach(b => b.classList.toggle('active', b.id==='gr-gb-'+g));
   renderPeriodChips();
   renderCharts();
   renderAllTables();
@@ -882,7 +1147,7 @@ function setGran(g) {
 function setPeriod(p) {
   if (p === activePeriod) return;
   activePeriod = p;
-  document.querySelectorAll('.period-chip').forEach(el =>
+  root.querySelectorAll('.period-chip').forEach(el =>
     el.classList.toggle('active', el.textContent.trim() === (p==='todos'?'Todos':p))
   );
   updateAllKPIs();
@@ -908,7 +1173,7 @@ function countUpEl(el) {
   requestAnimationFrame(tick);
 }
 function animatePanel(id) {
-  const panel=document.getElementById('panel-'+id); if(!panel) return;
+  const panel=document.getElementById('panel-gr-'+id); if(!panel) return;
   panel.querySelectorAll('.kpi').forEach((kpi,i)=>{
     kpi.classList.remove('kpi-in'); void kpi.offsetHeight;
     kpi.style.animationDelay=i*70+'ms'; kpi.classList.add('kpi-in');
@@ -917,38 +1182,12 @@ function animatePanel(id) {
   });
 }
 function switchTab(id) {
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('panel-'+id).classList.add('active');
-  ['geral','lc','le','tax','aa','cc','lh'].forEach((t,i)=>{ if(t===id) document.querySelectorAll('.tab-btn')[i].classList.add('active'); });
+  root.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  root.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-gr-'+id).classList.add('active');
+  ['geral','lc','le','tax','aa','cc','lh'].forEach((t,i)=>{ if(t===id) root.querySelectorAll('.tab-btn')[i].classList.add('active'); });
   animatePanel(id);
 }
-
-// ══════════════════════════════════════════════
-// THEME
-// ══════════════════════════════════════════════
-function applyTheme(light) {
-  document.body.classList.toggle('light', light);
-  document.getElementById('theme-btn').textContent = light?'Dark':'Light';
-  const grid=light?'#e2e8f0':'#1e2535', txt=light?'#94a3b8':'#64748b';
-  Object.values(charts).forEach(c=>{
-    if(!c) return;
-    ['x','y'].forEach(ax=>{
-      if(c.options.scales?.[ax]){
-        c.options.scales[ax].grid={...(c.options.scales[ax].grid||{}),color:grid};
-        c.options.scales[ax].ticks={...(c.options.scales[ax].ticks||{}),color:txt};
-      }
-    });
-    if(c.options.plugins?.legend?.labels) c.options.plugins.legend.labels.color=txt;
-    c.update('none');
-  });
-}
-function toggleTheme() {
-  const isLight=!document.body.classList.contains('light');
-  localStorage.setItem('vigna-theme', isLight?'light':'dark');
-  applyTheme(isLight);
-}
-(function(){ if(localStorage.getItem('vigna-theme')==='light') applyTheme(true); })();
 
 // ══════════════════════════════════════════════
 // INIT
@@ -958,6 +1197,651 @@ renderCharts();
 renderAllTables();
 updateAllKPIs();
 setTimeout(()=>animatePanel('geral'), 100);
+
+window.grSwitchTab = switchTab;
+window.grSetGran = setGran;
+window.grSetPeriod = setPeriod;
+window.__growthOnShow = () => Object.values(charts).forEach(c => c && c.resize());
+})();
+</script>
+<script>
+(function(){
+const root = document.getElementById('view-social');
+// ══════════════════════════════════════════════
+// DADOS
+// ══════════════════════════════════════════════
+const M = ['Jan/25','Fev/25','Mar/25','Abr/25','Mai/25','Jun/25','Jul/25','Ago/25','Set/25','Out/25','Nov/25','Dez/25','Jan/26','Fev/26','Mar/26','Abr/26'];
+
+const LC_IG = [
+  {mes:'Jan/25',seg:4430,alcance:13233,imp:20563,eng:254,taxa:1.92,posts:27},
+  {mes:'Fev/25',seg:4431,alcance:13095,imp:19064,eng:183,taxa:1.40,posts:24},
+  {mes:'Mar/25',seg:4445,alcance:470671,imp:576629,eng:304,taxa:0.06,posts:27},
+  {mes:'Abr/25',seg:4446,alcance:19178,imp:20776,eng:206,taxa:1.07,posts:27},
+  {mes:'Mai/25',seg:4439,alcance:900,imp:4635,eng:199,taxa:22.11,posts:28},
+  {mes:'Jun/25',seg:4439,alcance:1096,imp:4368,eng:205,taxa:18.70,posts:24},
+  {mes:'Jul/25',seg:4417,alcance:31387,imp:51862,eng:281,taxa:0.90,posts:26},
+  {mes:'Ago/25',seg:4424,alcance:17024,imp:52470,eng:289,taxa:1.70,posts:22},
+  {mes:'Set/25',seg:4417,alcance:107338,imp:287358,eng:132,taxa:0.12,posts:15},
+  {mes:'Out/25',seg:4409,alcance:4724,imp:11089,eng:182,taxa:3.85,posts:11},
+  {mes:'Nov/25',seg:4405,alcance:2761,imp:8517,eng:142,taxa:5.14,posts:9},
+  {mes:'Dez/25',seg:4410,alcance:5817,imp:14289,eng:70,taxa:1.20,posts:1},
+  {mes:'Jan/26',seg:4415,alcance:5791,imp:12948,eng:169,taxa:2.92,posts:6},
+  {mes:'Fev/26',seg:4423,alcance:17450,imp:32509,eng:101,taxa:0.58,posts:2},
+  {mes:'Mar/26',seg:4436,alcance:97350,imp:292402,eng:142,taxa:0.15,posts:2},
+  {mes:'Abr/26',seg:4435,alcance:33,imp:349,eng:3,taxa:9.09,posts:0},
+];
+const LE_IG = [
+  {mes:'Jan/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Fev/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Mar/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Abr/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Mai/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Jun/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Jul/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Ago/25',seg:4864,alcance:16025,imp:40043,eng:117,taxa:0.73,posts:27},
+  {mes:'Set/25',seg:4868,alcance:4754,imp:11784,eng:106,taxa:2.23,posts:16},
+  {mes:'Out/25',seg:4862,alcance:592,imp:2962,eng:95,taxa:16.05,posts:15},
+  {mes:'Nov/25',seg:4859,alcance:876,imp:3183,eng:107,taxa:12.21,posts:13},
+  {mes:'Dez/25',seg:4839,alcance:450,imp:1854,eng:61,taxa:13.56,posts:12},
+  {mes:'Jan/26',seg:4835,alcance:2506,imp:1005,eng:93,taxa:3.71,posts:14},
+  {mes:'Fev/26',seg:4822,alcance:313,imp:1058,eng:37,taxa:11.82,posts:3},
+  {mes:'Mar/26',seg:4813,alcance:743,imp:3759,eng:116,taxa:15.61,posts:12},
+  {mes:'Abr/26',seg:4571,alcance:402,imp:1382,eng:52,taxa:12.94,posts:4},
+];
+const TAX_IG = [
+  {mes:'Jan/25',seg:5696,alcance:12766,imp:31153,eng:3106,taxa:24.33,posts:26},
+  {mes:'Fev/25',seg:5715,alcance:217015,imp:262491,eng:405,taxa:0.19,posts:24},
+  {mes:'Mar/25',seg:5704,alcance:343092,imp:439795,eng:326,taxa:0.10,posts:23},
+  {mes:'Abr/25',seg:5711,alcance:24012,imp:27790,eng:474,taxa:1.97,posts:24},
+  {mes:'Mai/25',seg:5711,alcance:3660,imp:25216,eng:2645,taxa:72.27,posts:24},
+  {mes:'Jun/25',seg:5704,alcance:2738,imp:17266,eng:106,taxa:3.87,posts:21},
+  {mes:'Jul/25',seg:5718,alcance:2598,imp:19580,eng:554,taxa:21.32,posts:22},
+  {mes:'Ago/25',seg:5720,alcance:1953,imp:21516,eng:538,taxa:27.55,posts:22},
+  {mes:'Set/25',seg:5711,alcance:2207,imp:25516,eng:576,taxa:26.10,posts:18},
+  {mes:'Out/25',seg:5728,alcance:2115,imp:27778,eng:454,taxa:21.47,posts:15},
+  {mes:'Nov/25',seg:5738,alcance:2046,imp:18445,eng:370,taxa:18.08,posts:14},
+  {mes:'Dez/25',seg:5745,alcance:3538,imp:24586,eng:517,taxa:14.61,posts:12},
+  {mes:'Jan/26',seg:5748,alcance:2757,imp:13699,eng:330,taxa:11.97,posts:16},
+  {mes:'Fev/26',seg:5750,alcance:2477,imp:20725,eng:466,taxa:18.81,posts:9},
+  {mes:'Mar/26',seg:5754,alcance:2175,imp:22227,eng:890,taxa:40.92,posts:12},
+  {mes:'Abr/26',seg:5764,alcance:1718,imp:21401,eng:533,taxa:31.02,posts:10},
+];
+const AA_IG = [
+  {mes:'Jan/25',seg:10667,alcance:14323,imp:125465,eng:1972,taxa:13.77,posts:25},
+  {mes:'Fev/25',seg:10800,alcance:218770,imp:384352,eng:1457,taxa:0.67,posts:24},
+  {mes:'Mar/25',seg:10886,alcance:393996,imp:597681,eng:1259,taxa:0.32,posts:23},
+  {mes:'Abr/25',seg:10975,alcance:241773,imp:228915,eng:991,taxa:0.41,posts:26},
+  {mes:'Mai/25',seg:11036,alcance:14299,imp:146483,eng:2681,taxa:18.75,posts:19},
+  {mes:'Jun/25',seg:11059,alcance:16111,imp:142506,eng:2361,taxa:14.65,posts:25},
+  {mes:'Jul/25',seg:11097,alcance:9134,imp:102389,eng:986,taxa:10.79,posts:23},
+  {mes:'Ago/25',seg:11335,alcance:11291,imp:225815,eng:1688,taxa:14.95,posts:23},
+  {mes:'Set/25',seg:11360,alcance:9954,imp:261783,eng:1557,taxa:15.64,posts:23},
+  {mes:'Out/25',seg:11395,alcance:7023,imp:230233,eng:1624,taxa:23.12,posts:24},
+  {mes:'Nov/25',seg:11450,alcance:8440,imp:212609,eng:1396,taxa:16.54,posts:21},
+  {mes:'Dez/25',seg:11478,alcance:12750,imp:245262,eng:1816,taxa:14.24,posts:21},
+  {mes:'Jan/26',seg:11453,alcance:7402,imp:98913,eng:864,taxa:11.67,posts:24},
+  {mes:'Fev/26',seg:11452,alcance:5537,imp:73220,eng:455,taxa:8.22,posts:24},
+  {mes:'Mar/26',seg:11499,alcance:12837,imp:157737,eng:1859,taxa:14.48,posts:29},
+  {mes:'Abr/26',seg:11555,alcance:12839,imp:124187,eng:1452,taxa:11.31,posts:25},
+];
+const CC_IG = [
+  {mes:'Nov/25',seg:3138,alcance:767,imp:5284,eng:63,taxa:8.21,posts:12},
+  {mes:'Dez/25',seg:3130,alcance:625,imp:4029,eng:93,taxa:14.88,posts:12},
+  {mes:'Jan/26',seg:3120,alcance:1091,imp:4665,eng:126,taxa:11.55,posts:14},
+  {mes:'Fev/26',seg:3103,alcance:584,imp:2373,eng:89,taxa:15.24,posts:10},
+  {mes:'Mar/26',seg:3095,alcance:1056,imp:4562,eng:143,taxa:13.54,posts:6},
+  {mes:'Abr/26',seg:3125,alcance:7826,imp:11644,eng:303,taxa:3.87,posts:2},
+];
+const LC_LI = [
+  {mes:'Jan/25',seg:1460,alcance:688,vis:41,eng:65,taxa:9.45,posts:27},
+  {mes:'Fev/25',seg:1467,alcance:776,vis:42,eng:71,taxa:9.15,posts:24},
+  {mes:'Mar/25',seg:1544,alcance:1067,vis:71,eng:57,taxa:5.34,posts:27},
+  {mes:'Abr/25',seg:1548,alcance:690,vis:33,eng:33,taxa:4.78,posts:25},
+  {mes:'Mai/25',seg:1550,alcance:700,vis:29,eng:31,taxa:4.43,posts:28},
+  {mes:'Jun/25',seg:1556,alcance:639,vis:28,eng:32,taxa:5.01,posts:24},
+  {mes:'Jul/25',seg:1562,alcance:26170,vis:38,eng:35,taxa:0.13,posts:27},
+  {mes:'Ago/25',seg:1561,alcance:753,vis:27,eng:50,taxa:6.64,posts:29},
+  {mes:'Set/25',seg:1556,alcance:337,vis:21,eng:29,taxa:8.61,posts:17},
+  {mes:'Out/25',seg:1574,alcance:452,vis:32,eng:10,taxa:2.21,posts:15},
+  {mes:'Nov/25',seg:1571,alcance:541,vis:26,eng:23,taxa:4.25,posts:13},
+  {mes:'Dez/25',seg:1575,alcance:204,vis:19,eng:5,taxa:2.45,posts:1},
+  {mes:'Jan/26',seg:1579,alcance:1707,vis:43,eng:65,taxa:3.81,posts:7},
+  {mes:'Fev/26',seg:1590,alcance:584,vis:27,eng:23,taxa:3.94,posts:2},
+  {mes:'Mar/26',seg:1594,alcance:471,vis:33,eng:13,taxa:2.76,posts:1},
+  {mes:'Abr/26',seg:1593,alcance:149,vis:22,eng:0,taxa:0,posts:0},
+];
+const LE_LI = [
+  {mes:'Jan/25',seg:298,alcance:331,vis:3,eng:36,taxa:10.88,posts:27},
+  {mes:'Fev/25',seg:299,alcance:454,vis:2,eng:55,taxa:12.11,posts:24},
+  {mes:'Mar/25',seg:305,alcance:533,vis:8,eng:52,taxa:9.76,posts:24},
+  {mes:'Abr/25',seg:310,alcance:473,vis:10,eng:42,taxa:8.88,posts:26},
+  {mes:'Mai/25',seg:310,alcance:350,vis:4,eng:25,taxa:7.14,posts:28},
+  {mes:'Jun/25',seg:312,alcance:253,vis:0,eng:23,taxa:9.09,posts:25},
+  {mes:'Jul/25',seg:313,alcance:6852,vis:1,eng:19,taxa:0.28,posts:25},
+  {mes:'Ago/25',seg:313,alcance:8760,vis:0,eng:30,taxa:0.34,posts:27},
+  {mes:'Set/25',seg:312,alcance:216,vis:6,eng:23,taxa:10.65,posts:17},
+  {mes:'Out/25',seg:314,alcance:144,vis:1,eng:8,taxa:5.56,posts:12},
+  {mes:'Nov/25',seg:315,alcance:297,vis:2,eng:14,taxa:4.71,posts:12},
+  {mes:'Dez/25',seg:315,alcance:234,vis:2,eng:13,taxa:5.56,posts:3},
+  {mes:'Jan/26',seg:316,alcance:149,vis:0,eng:2,taxa:1.34,posts:14},
+  {mes:'Fev/26',seg:314,alcance:130,vis:0,eng:7,taxa:5.38,posts:1},
+  {mes:'Mar/26',seg:314,alcance:116,vis:0,eng:6,taxa:5.17,posts:7},
+  {mes:'Abr/26',seg:312,alcance:141,vis:2,eng:21,taxa:14.89,posts:3},
+];
+const TAX_LI = [
+  {mes:'Jan/25',seg:876,alcance:1823,vis:49,eng:150,taxa:8.23,posts:26},
+  {mes:'Fev/25',seg:886,alcance:2261,vis:38,eng:144,taxa:6.37,posts:25},
+  {mes:'Mar/25',seg:889,alcance:1746,vis:19,eng:133,taxa:7.62,posts:25},
+  {mes:'Abr/25',seg:893,alcance:2057,vis:26,eng:137,taxa:6.66,posts:26},
+  {mes:'Mai/25',seg:920,alcance:2849,vis:49,eng:150,taxa:5.27,posts:27},
+  {mes:'Jun/25',seg:943,alcance:2017,vis:40,eng:87,taxa:4.31,posts:22},
+  {mes:'Jul/25',seg:964,alcance:66809,vis:55,eng:77,taxa:0.12,posts:23},
+  {mes:'Ago/25',seg:975,alcance:131292,vis:48,eng:100,taxa:0.08,posts:27},
+  {mes:'Set/25',seg:977,alcance:63010,vis:38,eng:63,taxa:0.10,posts:18},
+  {mes:'Out/25',seg:981,alcance:1224,vis:25,eng:71,taxa:5.80,posts:16},
+  {mes:'Nov/25',seg:985,alcance:589,vis:15,eng:22,taxa:3.74,posts:14},
+  {mes:'Dez/25',seg:998,alcance:869,vis:20,eng:33,taxa:3.80,posts:14},
+  {mes:'Jan/26',seg:998,alcance:1233,vis:72,eng:18,taxa:1.46,posts:15},
+  {mes:'Fev/26',seg:1004,alcance:661,vis:25,eng:15,taxa:2.27,posts:11},
+  {mes:'Mar/26',seg:1014,alcance:546,vis:28,eng:19,taxa:3.48,posts:0},
+  {mes:'Abr/26',seg:1013,alcance:736,vis:24,eng:25,taxa:3.40,posts:4},
+];
+const AA_LI = [
+  {mes:'Jan/25',seg:43408,alcance:99109,vis:1835,eng:1080,taxa:1.09,posts:28},
+  {mes:'Fev/25',seg:44579,alcance:88055,vis:2192,eng:935,taxa:1.06,posts:26},
+  {mes:'Mar/25',seg:45218,alcance:58862,vis:1976,eng:636,taxa:1.08,posts:26},
+  {mes:'Abr/25',seg:45459,alcance:22574,vis:1459,eng:429,taxa:1.90,posts:28},
+  {mes:'Mai/25',seg:45805,alcance:46703,vis:1747,eng:1128,taxa:2.42,posts:31},
+  {mes:'Jun/25',seg:46274,alcance:157467,vis:1740,eng:1267,taxa:0.80,posts:27},
+  {mes:'Jul/25',seg:46604,alcance:63393,vis:1560,eng:468,taxa:0.74,posts:28},
+  {mes:'Ago/25',seg:46920,alcance:84965,vis:1401,eng:447,taxa:0.53,posts:30},
+  {mes:'Set/25',seg:47128,alcance:26785,vis:1248,eng:467,taxa:1.74,posts:27},
+  {mes:'Out/25',seg:47585,alcance:30755,vis:1450,eng:494,taxa:1.61,posts:30},
+  {mes:'Nov/25',seg:48127,alcance:24927,vis:1324,eng:356,taxa:1.43,posts:26},
+  {mes:'Dez/25',seg:49030,alcance:35608,vis:1354,eng:398,taxa:1.12,posts:33},
+  {mes:'Jan/26',seg:49245,alcance:28403,vis:2095,eng:298,taxa:1.05,posts:30},
+  {mes:'Fev/26',seg:49660,alcance:19387,vis:1512,eng:195,taxa:1.01,posts:15},
+  {mes:'Mar/26',seg:50219,alcance:25486,vis:1652,eng:251,taxa:0.98,posts:15},
+  {mes:'Abr/26',seg:50684,alcance:47040,vis:1756,eng:423,taxa:0.90,posts:14},
+];
+const CC_LI = [
+  {mes:'Nov/25',seg:1174,alcance:165,vis:11,eng:12,taxa:7.27,posts:11},
+  {mes:'Dez/25',seg:1174,alcance:276,vis:7,eng:10,taxa:3.62,posts:12},
+  {mes:'Jan/26',seg:1174,alcance:308,vis:15,eng:21,taxa:6.82,posts:15},
+  {mes:'Fev/26',seg:1174,alcance:355,vis:13,eng:14,taxa:3.94,posts:11},
+  {mes:'Mar/26',seg:1174,alcance:395,vis:27,eng:13,taxa:3.29,posts:12},
+  {mes:'Abr/26',seg:1173,alcance:247,vis:16,eng:4,taxa:1.62,posts:2},
+];
+
+// ══════════════════════════════════════════════
+// FORMATTERS
+// ══════════════════════════════════════════════
+const fmtN  = v => (v > 0) ? v.toLocaleString('pt-BR') : '—';
+const fmtNk = v => {
+  if (!v || v <= 0) return '—';
+  if (v >= 1000) return (v/1000).toLocaleString('pt-BR',{minimumFractionDigits:0,maximumFractionDigits:1})+'k';
+  return v.toLocaleString('pt-BR');
+};
+const fmtP  = v => (v > 0) ? v.toFixed(2).replace('.',',')+'%' : '—';
+
+// ══════════════════════════════════════════════
+// PERIOD HELPERS
+// ══════════════════════════════════════════════
+const MONTH_NAMES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const Q_PT = {Q1:'Jan–Mar',Q2:'Abr–Jun',Q3:'Jul–Set',Q4:'Out–Dez'};
+
+function quarterKey(mes) {
+  const [m,y] = mes.split('/');
+  return 'Q' + (Math.floor(MONTH_NAMES.indexOf(m)/3)+1) + '/' + y;
+}
+function yearKey(mes) { return '20' + mes.split('/')[1]; }
+
+function getPeriodList(gran) {
+  if (gran === 'mensal') return ['todos', ...M];
+  const seen = new Set(), list = [];
+  const fn = gran === 'trimestral' ? quarterKey : yearKey;
+  M.forEach(m => { const k = fn(m); if (!seen.has(k)) { seen.add(k); list.push(k); } });
+  return ['todos', ...list];
+}
+
+function matchesPeriod(mes, period, gran) {
+  if (period === 'todos') return true;
+  if (gran === 'mensal')     return mes === period;
+  if (gran === 'trimestral') return quarterKey(mes) === period;
+  return yearKey(mes) === period;
+}
+
+function filterRows(arr, period, gran) {
+  return arr.filter(d => matchesPeriod(d.mes, period, gran));
+}
+
+function prevPeriod(period, gran) {
+  if (period === 'todos') return null;
+  const list = getPeriodList(gran).filter(p => p !== 'todos');
+  const i = list.indexOf(period);
+  return i > 0 ? list[i-1] : null;
+}
+
+// ══════════════════════════════════════════════
+// CALC FUNCTIONS
+// Seguidores = snapshot (último mês do período)
+// Alcance, Eng, Posts = soma
+// Taxa = eng_total / alcance_total recalculada
+// Para 'todos' → mostra último mês disponível (estado atual)
+// ══════════════════════════════════════════════
+function calcIG(arr, period, gran) {
+  if (period === 'todos') {
+    const last = arr.filter(d => d.seg > 0).slice(-1)[0];
+    if (!last) return null;
+    return { seg: last.seg, alcance: last.alcance, imp: last.imp||0, eng: last.eng, taxa: last.taxa, posts: last.posts, label: last.mes };
+  }
+  const rows = filterRows(arr, period, gran).filter(d => d.seg > 0);
+  if (!rows.length) return null;
+  const seg     = rows[rows.length - 1].seg;
+  const alcance = rows.reduce((s,d) => s + d.alcance, 0);
+  const imp     = rows.reduce((s,d) => s + (d.imp||0), 0);
+  const eng     = rows.reduce((s,d) => s + d.eng, 0);
+  const taxa    = alcance > 0 ? (eng / alcance * 100) : 0;
+  const posts   = rows.reduce((s,d) => s + d.posts, 0);
+  return { seg, alcance, imp, eng, taxa, posts };
+}
+
+function calcLI(arr, period, gran) {
+  if (period === 'todos') {
+    const last = arr[arr.length - 1];
+    if (!last) return null;
+    return { seg: last.seg, alcance: last.alcance, vis: last.vis||0, eng: last.eng, taxa: last.taxa, posts: last.posts, label: last.mes };
+  }
+  const rows = filterRows(arr, period, gran);
+  if (!rows.length) return null;
+  const seg     = rows[rows.length - 1].seg;
+  const alcance = rows.reduce((s,d) => s + d.alcance, 0);
+  const vis     = rows.reduce((s,d) => s + (d.vis||0), 0);
+  const eng     = rows.reduce((s,d) => s + d.eng, 0);
+  const taxa    = alcance > 0 ? (eng / alcance * 100) : 0;
+  const posts   = rows.reduce((s,d) => s + d.posts, 0);
+  return { seg, alcance, vis, eng, taxa, posts };
+}
+
+// ══════════════════════════════════════════════
+// DELTA HTML
+// ══════════════════════════════════════════════
+function deltaHtml(curr, prev) {
+  if (prev === null || prev === undefined || prev === 0 && curr === 0) return '';
+  if (prev === 0 && curr > 0) return '<span style="color:#34d399;font-weight:700">● novo</span>';
+  if (prev === 0) return '';
+  const p = Math.round((curr - prev) / Math.abs(prev) * 100);
+  if (p === 0) return '<span style="color:#64748b">= estável</span>';
+  return `<span style="color:${p>0?'#34d399':'#f87171'};font-weight:700">${p>0?'▲':'▼'} ${p>0?'+':''}${p}%</span><span style="color:#475569"> vs ant.</span>`;
+}
+
+// ══════════════════════════════════════════════
+// UPDATE KPIs
+// ══════════════════════════════════════════════
+function $set(id, html) { const el = document.getElementById(id); if (el) el.innerHTML = html; }
+
+function updateBrandIG(prefix, arr) {
+  const per = activePeriod, gran = activeGran;
+  const pp  = gran === 'mensal' ? null : prevPeriod(per, gran);
+  const cur = calcIG(arr, per, gran);
+  const prv = pp ? calcIG(arr, pp, gran) : null;
+
+  if (!cur) {
+    $set(`${prefix}-kpi-seg`, '—'); $set(`${prefix}-kpi-seg-d`, '');
+    $set(`${prefix}-kpi-alc`, '—'); $set(`${prefix}-kpi-alc-d`, '');
+    $set(`${prefix}-kpi-eng`, '—'); $set(`${prefix}-kpi-eng-d`, '');
+    $set(`${prefix}-kpi-taxa`, '—'); $set(`${prefix}-kpi-taxa-d`, '');
+    return;
+  }
+  $set(`${prefix}-kpi-seg`,    fmtN(cur.seg));
+  $set(`${prefix}-kpi-seg-d`,  prv ? deltaHtml(cur.seg, prv.seg) : '');
+  $set(`${prefix}-kpi-alc`,    fmtNk(cur.alcance));
+  $set(`${prefix}-kpi-alc-d`,  prv ? deltaHtml(cur.alcance, prv.alcance) : '');
+  $set(`${prefix}-kpi-eng`,    fmtN(cur.eng));
+  $set(`${prefix}-kpi-eng-d`,  prv ? deltaHtml(cur.eng, prv.eng) : '');
+  $set(`${prefix}-kpi-taxa`,   fmtP(cur.taxa));
+  $set(`${prefix}-kpi-taxa-d`, prv ? deltaHtml(cur.taxa, prv.taxa) : '');
+  // Update seguidores sub-text
+  const subEl = document.getElementById(`${prefix}-kpi-seg-sub`);
+  if (subEl) {
+    const base = subEl.dataset.base || subEl.textContent;
+    if (!subEl.dataset.base) subEl.dataset.base = base;
+    subEl.textContent = per === 'todos' ? base : (cur.label || per);
+  }
+}
+
+function updateBrandLI(prefix, arr) {
+  const per = activePeriod, gran = activeGran;
+  const pp  = gran === 'mensal' ? null : prevPeriod(per, gran);
+  const cur = calcLI(arr, per, gran);
+  const prv = pp ? calcLI(arr, pp, gran) : null;
+
+  if (!cur) {
+    $set(`${prefix}-kpi-seg`, '—'); $set(`${prefix}-kpi-seg-d`, '');
+    $set(`${prefix}-kpi-alc`, '—'); $set(`${prefix}-kpi-alc-d`, '');
+    $set(`${prefix}-kpi-eng`, '—'); $set(`${prefix}-kpi-eng-d`, '');
+    $set(`${prefix}-kpi-taxa`, '—'); $set(`${prefix}-kpi-taxa-d`, '');
+    return;
+  }
+  $set(`${prefix}-kpi-seg`,    fmtN(cur.seg));
+  $set(`${prefix}-kpi-seg-d`,  prv ? deltaHtml(cur.seg, prv.seg) : '');
+  $set(`${prefix}-kpi-alc`,    fmtNk(cur.alcance));
+  $set(`${prefix}-kpi-alc-d`,  prv ? deltaHtml(cur.alcance, prv.alcance) : '');
+  $set(`${prefix}-kpi-eng`,    fmtN(cur.eng));
+  $set(`${prefix}-kpi-eng-d`,  prv ? deltaHtml(cur.eng, prv.eng) : '');
+  $set(`${prefix}-kpi-taxa`,   fmtP(cur.taxa));
+  $set(`${prefix}-kpi-taxa-d`, prv ? deltaHtml(cur.taxa, prv.taxa) : '');
+  const subEl = document.getElementById(`${prefix}-kpi-seg-sub`);
+  if (subEl) {
+    const base = subEl.dataset.base || subEl.textContent;
+    if (!subEl.dataset.base) subEl.dataset.base = base;
+    subEl.textContent = per === 'todos' ? base : (cur.label || per);
+  }
+}
+
+function updateAllKPIs() {
+  updateBrandIG('aa-ig', AA_IG); updateBrandLI('aa-li', AA_LI);
+  updateBrandIG('tax-ig', TAX_IG); updateBrandLI('tax-li', TAX_LI);
+  updateBrandIG('lc-ig', LC_IG); updateBrandLI('lc-li', LC_LI);
+  updateBrandIG('le-ig', LE_IG); updateBrandLI('le-li', LE_LI);
+  updateBrandIG('cc-ig', CC_IG); updateBrandLI('cc-li', CC_LI);
+  updateContextBar();
+}
+
+function updateContextBar() {
+  const bar = document.getElementById('so-ctx-bar');
+  const txt = document.getElementById('so-ctx-text');
+  const per = activePeriod, gran = activeGran;
+  if (per === 'todos') { bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  let label = per;
+  if (gran === 'trimestral') { const q = per.split('/')[0]; label = `${per} · ${Q_PT[q]||''}`; }
+  txt.textContent = `Exibindo dados de ${label}`;
+}
+
+// ══════════════════════════════════════════════
+// CHART ENGINE
+// ══════════════════════════════════════════════
+let charts = {};
+function mkChart(id, cfg) { if (charts[id]) charts[id].destroy(); charts[id] = new Chart(document.getElementById(id), cfg); }
+
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.borderColor = '#e2e8f0';
+Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
+Chart.defaults.plugins.legend.labels.usePointStyle = true;
+Chart.defaults.plugins.legend.labels.padding = 14;
+
+const gO  = { y:{grid:{color:'#e2e8f0'}}, x:{grid:{display:false}} };
+const lnO = (c,ca) => ({borderColor:c,backgroundColor:ca,fill:true,tension:.4,pointBackgroundColor:c,pointRadius:3,pointHoverRadius:5});
+const cm  = (r,g,b,a) => ({r,g,b,full:a});
+const fullC = (n, r,g,b,a) => Array(n).fill(`rgba(${r},${g},${b},${a})`);
+
+// Bar charts that support period highlighting (charts with _cm datasets)
+const BAR_CHARTS = [
+  'lc-ig-alcance','lc-ig-eng',  'lc-li-alcance',
+  'le-ig-alcance','le-ig-eng',  'le-li-alcance',
+  'tax-ig-alcance','tax-ig-eng','tax-li-alcance',
+  'aa-ig-alcance','aa-ig-eng',  'aa-li-alcance',
+  'cc-ig-alcance','cc-ig-eng',  'cc-li-alcance',
+];
+
+function updateChartHighlights() {
+  const per = activePeriod, gran = activeGran;
+  BAR_CHARTS.forEach(id => {
+    const c = charts[id]; if (!c) return;
+    c.data.datasets.forEach(ds => {
+      if (!ds._cm) return;
+      const {r,g,b,full} = ds._cm;
+      ds.backgroundColor = c.data.labels.map(lbl =>
+        per === 'todos' || matchesPeriod(lbl, per, gran)
+          ? `rgba(${r},${g},${b},${full})`
+          : `rgba(${r},${g},${b},0.08)`
+      );
+    });
+    c.update('none');
+  });
+}
+
+// ══════════════════════════════════════════════
+// RENDER CHARTS
+// ══════════════════════════════════════════════
+function renderCharts() {
+  const leIgRows = LE_IG.filter(d => d.seg > 0);
+  const leIgM    = leIgRows.map(d => d.mes);
+  const ccIgM    = CC_IG.map(d => d.mes);
+  const ccLiM    = CC_LI.map(d => d.mes);
+
+  // ── VIGNA A.A ────────────────────────────────
+  mkChart('aa-ig-seg',{type:'line',data:{labels:AA_IG.map(d=>d.mes),datasets:[{label:'Seguidores',...lnO('rgba(29,78,216,1)','rgba(29,78,216,.12)'),data:AA_IG.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('aa-ig-alcance',{type:'bar',data:{labels:AA_IG.map(d=>d.mes),datasets:[
+    {label:'Alcance',   data:AA_IG.map(d=>d.alcance),backgroundColor:fullC(AA_IG.length,29,78,216,.55),  borderRadius:4,_cm:cm(29,78,216,.55)},
+    {label:'Impressões',data:AA_IG.map(d=>d.imp),    backgroundColor:fullC(AA_IG.length,29,78,216,.2),   borderRadius:4,_cm:cm(29,78,216,.2)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+  mkChart('aa-ig-eng',{type:'bar',data:{labels:AA_IG.map(d=>d.mes),datasets:[{label:'Engajamentos',data:AA_IG.map(d=>d.eng),backgroundColor:fullC(AA_IG.length,236,72,153,.75),borderRadius:4,_cm:cm(236,72,153,.75)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('aa-ig-taxa',{type:'line',data:{labels:AA_IG.map(d=>d.mes),datasets:[{label:'Taxa Eng. %',...lnO('rgba(251,146,60,1)','rgba(251,146,60,.1)'),data:AA_IG.map(d=>d.taxa)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>v+'%'}}},responsive:true}});
+  mkChart('aa-li-seg',{type:'line',data:{labels:AA_LI.map(d=>d.mes),datasets:[{label:'Seguidores',...lnO('rgba(14,165,233,1)','rgba(14,165,233,.12)'),data:AA_LI.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('aa-li-alcance',{type:'bar',data:{labels:AA_LI.map(d=>d.mes),datasets:[
+    {label:'Alcance',      data:AA_LI.map(d=>d.alcance),backgroundColor:fullC(AA_LI.length,14,165,233,.55),borderRadius:4,_cm:cm(14,165,233,.55)},
+    {label:'Engajamentos', data:AA_LI.map(d=>d.eng),    backgroundColor:fullC(AA_LI.length,56,189,248,.85),borderRadius:4,_cm:cm(56,189,248,.85)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
+  // ── VIGNA TAX ────────────────────────────────
+  mkChart('tax-ig-seg',{type:'line',data:{labels:M,datasets:[{label:'Seguidores',...lnO('rgba(234,179,8,1)','rgba(234,179,8,.12)'),data:TAX_IG.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('tax-ig-alcance',{type:'bar',data:{labels:M,datasets:[
+    {label:'Alcance',   data:TAX_IG.map(d=>d.alcance),backgroundColor:fullC(M.length,234,179,8,.55),borderRadius:4,_cm:cm(234,179,8,.55)},
+    {label:'Impressões',data:TAX_IG.map(d=>d.imp),    backgroundColor:fullC(M.length,234,179,8,.2), borderRadius:4,_cm:cm(234,179,8,.2)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+  mkChart('tax-ig-eng',{type:'bar',data:{labels:M,datasets:[{label:'Engajamentos',data:TAX_IG.map(d=>d.eng),backgroundColor:fullC(M.length,236,72,153,.75),borderRadius:4,_cm:cm(236,72,153,.75)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('tax-ig-taxa',{type:'line',data:{labels:M,datasets:[{label:'Taxa Eng. %',...lnO('rgba(251,146,60,1)','rgba(251,146,60,.1)'),data:TAX_IG.map(d=>d.taxa)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>v+'%'}}},responsive:true}});
+  mkChart('tax-li-seg',{type:'line',data:{labels:M,datasets:[{label:'Seguidores',...lnO('rgba(14,165,233,1)','rgba(14,165,233,.12)'),data:TAX_LI.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('tax-li-alcance',{type:'bar',data:{labels:M,datasets:[
+    {label:'Alcance',      data:TAX_LI.map(d=>d.alcance),backgroundColor:fullC(M.length,14,165,233,.55),borderRadius:4,_cm:cm(14,165,233,.55)},
+    {label:'Engajamentos', data:TAX_LI.map(d=>d.eng),    backgroundColor:fullC(M.length,56,189,248,.85),borderRadius:4,_cm:cm(56,189,248,.85)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
+  // ── LEGAL CONTROL ────────────────────────────
+  mkChart('lc-ig-seg',{type:'line',data:{labels:M,datasets:[{label:'Seguidores',...lnO('rgba(249,115,22,1)','rgba(249,115,22,.12)'),data:LC_IG.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('lc-ig-alcance',{type:'bar',data:{labels:M,datasets:[
+    {label:'Alcance',   data:LC_IG.map(d=>d.alcance),backgroundColor:fullC(M.length,249,115,22,.55),borderRadius:4,_cm:cm(249,115,22,.55)},
+    {label:'Impressões',data:LC_IG.map(d=>d.imp),    backgroundColor:fullC(M.length,249,115,22,.2), borderRadius:4,_cm:cm(249,115,22,.2)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+  mkChart('lc-ig-eng',{type:'bar',data:{labels:M,datasets:[{label:'Engajamentos',data:LC_IG.map(d=>d.eng),backgroundColor:fullC(M.length,236,72,153,.75),borderRadius:4,_cm:cm(236,72,153,.75)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('lc-ig-taxa',{type:'line',data:{labels:M,datasets:[{label:'Taxa Eng. %',...lnO('rgba(251,146,60,1)','rgba(251,146,60,.1)'),data:LC_IG.map(d=>d.taxa)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>v+'%'}}},responsive:true}});
+  mkChart('lc-li-seg',{type:'line',data:{labels:M,datasets:[{label:'Seguidores',...lnO('rgba(14,165,233,1)','rgba(14,165,233,.12)'),data:LC_LI.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('lc-li-alcance',{type:'bar',data:{labels:M,datasets:[
+    {label:'Alcance',      data:LC_LI.map(d=>d.alcance),backgroundColor:fullC(M.length,14,165,233,.55),borderRadius:4,_cm:cm(14,165,233,.55)},
+    {label:'Engajamentos', data:LC_LI.map(d=>d.eng),    backgroundColor:fullC(M.length,56,189,248,.85),borderRadius:4,_cm:cm(56,189,248,.85)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
+  // ── LEGAL ÉTICA (IG começa Ago/25) ──────────
+  mkChart('le-ig-seg',{type:'line',data:{labels:leIgM,datasets:[{label:'Seguidores',...lnO('rgba(239,68,68,1)','rgba(239,68,68,.12)'),data:leIgRows.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('le-ig-alcance',{type:'bar',data:{labels:leIgM,datasets:[
+    {label:'Alcance',   data:leIgRows.map(d=>d.alcance),backgroundColor:fullC(leIgM.length,239,68,68,.55),borderRadius:4,_cm:cm(239,68,68,.55)},
+    {label:'Impressões',data:leIgRows.map(d=>d.imp),    backgroundColor:fullC(leIgM.length,239,68,68,.2), borderRadius:4,_cm:cm(239,68,68,.2)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+  mkChart('le-ig-eng',{type:'bar',data:{labels:leIgM,datasets:[{label:'Engajamentos',data:leIgRows.map(d=>d.eng),backgroundColor:fullC(leIgM.length,236,72,153,.75),borderRadius:4,_cm:cm(236,72,153,.75)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('le-ig-taxa',{type:'line',data:{labels:leIgM,datasets:[{label:'Taxa Eng. %',...lnO('rgba(251,146,60,1)','rgba(251,146,60,.1)'),data:leIgRows.map(d=>d.taxa)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>v+'%'}}},responsive:true}});
+  mkChart('le-li-seg',{type:'line',data:{labels:M,datasets:[{label:'Seguidores',...lnO('rgba(14,165,233,1)','rgba(14,165,233,.12)'),data:LE_LI.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('le-li-alcance',{type:'bar',data:{labels:M,datasets:[
+    {label:'Alcance',      data:LE_LI.map(d=>d.alcance),backgroundColor:fullC(M.length,14,165,233,.55),borderRadius:4,_cm:cm(14,165,233,.55)},
+    {label:'Engajamentos', data:LE_LI.map(d=>d.eng),    backgroundColor:fullC(M.length,56,189,248,.85),borderRadius:4,_cm:cm(56,189,248,.85)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
+  // ── COMPLIANCE CONTROL (começa Nov/25) ───────
+  mkChart('cc-ig-seg',{type:'line',data:{labels:ccIgM,datasets:[{label:'Seguidores',...lnO('rgba(14,165,233,1)','rgba(14,165,233,.12)'),data:CC_IG.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('cc-ig-alcance',{type:'bar',data:{labels:ccIgM,datasets:[
+    {label:'Alcance',   data:CC_IG.map(d=>d.alcance),backgroundColor:fullC(ccIgM.length,14,165,233,.55),borderRadius:4,_cm:cm(14,165,233,.55)},
+    {label:'Impressões',data:CC_IG.map(d=>d.imp),    backgroundColor:fullC(ccIgM.length,14,165,233,.2), borderRadius:4,_cm:cm(14,165,233,.2)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+  mkChart('cc-ig-eng',{type:'bar',data:{labels:ccIgM,datasets:[{label:'Engajamentos',data:CC_IG.map(d=>d.eng),backgroundColor:fullC(ccIgM.length,236,72,153,.75),borderRadius:4,_cm:cm(236,72,153,.75)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('cc-ig-taxa',{type:'line',data:{labels:ccIgM,datasets:[{label:'Taxa Eng. %',...lnO('rgba(251,146,60,1)','rgba(251,146,60,.1)'),data:CC_IG.map(d=>d.taxa)}]},options:{plugins:{legend:{display:false}},scales:{...gO,y:{...gO.y,ticks:{callback:v=>v+'%'}}},responsive:true}});
+  mkChart('cc-li-seg',{type:'line',data:{labels:ccLiM,datasets:[{label:'Seguidores',...lnO('rgba(14,165,233,1)','rgba(14,165,233,.12)'),data:CC_LI.map(d=>d.seg)}]},options:{plugins:{legend:{display:false}},scales:{...gO},responsive:true}});
+  mkChart('cc-li-alcance',{type:'bar',data:{labels:ccLiM,datasets:[
+    {label:'Alcance',      data:CC_LI.map(d=>d.alcance),backgroundColor:fullC(ccLiM.length,14,165,233,.55),borderRadius:4,_cm:cm(14,165,233,.55)},
+    {label:'Engajamentos', data:CC_LI.map(d=>d.eng),    backgroundColor:fullC(ccLiM.length,56,189,248,.85),borderRadius:4,_cm:cm(56,189,248,.85)},
+  ]},options:{plugins:{legend:{position:'bottom'}},scales:{...gO},responsive:true}});
+
+  // Apply highlight if period already selected
+  if (activePeriod !== 'todos') updateChartHighlights();
+}
+
+// ══════════════════════════════════════════════
+// RENDER TABLES (dynamic)
+// ══════════════════════════════════════════════
+function renderIGTable(tbodyId, arr) {
+  const rows = filterRows(arr, activePeriod, activeGran).filter(d => d.seg > 0);
+  const el = document.getElementById(tbodyId); if (!el) return;
+  el.innerHTML = '';
+  if (!rows.length) { el.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:24px">Sem dados para este período</td></tr>'; return; }
+  let tAlc=0,tImp=0,tEng=0,tPosts=0;
+  rows.forEach(d => {
+    tAlc+=d.alcance; tImp+=d.imp||0; tEng+=d.eng; tPosts+=d.posts;
+    el.innerHTML += `<tr><td>${d.mes}</td><td class="num">${fmtN(d.seg)}</td><td class="num">${fmtN(d.alcance)}</td><td class="num">${fmtN(d.imp||0)}</td><td class="num">${fmtN(d.eng)}</td><td class="num">${fmtP(d.taxa)}</td><td class="num">${d.posts||'—'}</td></tr>`;
+  });
+  const lastSeg = rows[rows.length-1].seg;
+  const tTaxa = tAlc > 0 ? (tEng/tAlc*100) : 0;
+  el.innerHTML += `<tr class="total-row"><td>TOTAL / ÚLT.</td><td class="num">${fmtN(lastSeg)}</td><td class="num">${fmtNk(tAlc)}</td><td class="num">${fmtNk(tImp)}</td><td class="num positive">${fmtN(tEng)}</td><td class="num positive">${fmtP(tTaxa)}</td><td class="num">${tPosts||'—'}</td></tr>`;
+}
+
+function renderLITable(tbodyId, arr) {
+  const rows = filterRows(arr, activePeriod, activeGran);
+  const el = document.getElementById(tbodyId); if (!el) return;
+  el.innerHTML = '';
+  if (!rows.length) { el.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:24px">Sem dados para este período</td></tr>'; return; }
+  let tAlc=0,tVis=0,tEng=0,tPosts=0;
+  rows.forEach(d => {
+    tAlc+=d.alcance; tVis+=d.vis||0; tEng+=d.eng; tPosts+=d.posts;
+    el.innerHTML += `<tr><td>${d.mes}</td><td class="num">${fmtN(d.seg)}</td><td class="num">${fmtN(d.alcance)}</td><td class="num">${fmtN(d.vis||0)||'—'}</td><td class="num">${fmtN(d.eng)}</td><td class="num">${fmtP(d.taxa)}</td><td class="num">${d.posts||'—'}</td></tr>`;
+  });
+  const lastSeg = rows[rows.length-1].seg;
+  const tTaxa = tAlc > 0 ? (tEng/tAlc*100) : 0;
+  el.innerHTML += `<tr class="total-row"><td>TOTAL / ÚLT.</td><td class="num">${fmtN(lastSeg)}</td><td class="num">${fmtNk(tAlc)}</td><td class="num">${fmtN(tVis)||'—'}</td><td class="num positive">${fmtN(tEng)}</td><td class="num positive">${fmtP(tTaxa)}</td><td class="num">${tPosts||'—'}</td></tr>`;
+}
+
+function renderAllTables() {
+  renderIGTable('aa-ig-table', AA_IG); renderLITable('aa-li-table', AA_LI);
+  renderIGTable('tax-ig-table', TAX_IG); renderLITable('tax-li-table', TAX_LI);
+  renderIGTable('lc-ig-table', LC_IG); renderLITable('lc-li-table', LC_LI);
+  renderIGTable('le-ig-table', LE_IG); renderLITable('le-li-table', LE_LI);
+  renderIGTable('cc-ig-table', CC_IG); renderLITable('cc-li-table', CC_LI);
+}
+
+// ══════════════════════════════════════════════
+// CONTROLS
+// ══════════════════════════════════════════════
+let activeGran = 'mensal', activePeriod = 'todos';
+
+function scrollChips(dir) {
+  const el = document.getElementById('so-period-chips');
+  el.scrollBy({ left: dir * 180, behavior: 'smooth' });
+}
+
+function renderPeriodChips() {
+  const chips = document.getElementById('so-period-chips');
+  chips.innerHTML = getPeriodList(activeGran).map(p =>
+    `<button class="period-chip${p==='todos'?' todos':''}${p===activePeriod?' active':''}" onclick="soSetPeriod('${p}')">${p==='todos'?'Todos':p}</button>`
+  ).join('');
+}
+
+function updateScrollBtns() {
+  const show = activeGran === 'mensal';
+  root.querySelectorAll('.chips-scroll-btn').forEach(b => b.style.display = show ? '' : 'none');
+}
+
+function setGran(g) {
+  if (g === activeGran) return;
+  activeGran = g; activePeriod = 'todos';
+  root.querySelectorAll('.gran-btn').forEach(b => b.classList.toggle('active', b.id === 'so-gb-'+g));
+  renderPeriodChips();
+  updateScrollBtns();
+  renderCharts();
+  renderAllTables();
+  updateAllKPIs();
+}
+
+function setPeriod(p) {
+  if (p === activePeriod) return;
+  activePeriod = p;
+  root.querySelectorAll('.period-chip').forEach(el =>
+    el.classList.toggle('active', el.textContent.trim() === (p==='todos'?'Todos':p))
+  );
+  updateAllKPIs();
+  updateChartHighlights();
+  renderAllTables();
+}
+
+// ══════════════════════════════════════════════
+// TAB & ANIMATION
+// ══════════════════════════════════════════════
+function countUpEl(el) {
+  const raw = el.textContent.trim();
+  const m = raw.match(/[\d.]+(?:,\d+)?/); if (!m) return;
+  const num = parseFloat(m[0].replace(/\./g,'').replace(',','.')); if (!num) return;
+  const pre = raw.slice(0, raw.search(/\d/)), suf = raw.slice(raw.search(/\d/)+m[0].length);
+  const hasDec = m[0].includes(','), dur = 900, t0 = performance.now();
+  const tick = now => {
+    const p = Math.min((now-t0)/dur,1), v = (1-Math.pow(1-p,3))*num;
+    el.textContent = pre+(hasDec?v.toFixed(1).replace('.',','):Math.round(v).toLocaleString('pt-BR'))+suf;
+    if (p<1) requestAnimationFrame(tick); else el.textContent = raw;
+  };
+  requestAnimationFrame(tick);
+}
+function animatePanel(id) {
+  const panel = document.getElementById('panel-so-'+id); if (!panel) return;
+  panel.querySelectorAll('.kpi').forEach((kpi,i) => {
+    kpi.classList.remove('kpi-in'); void kpi.offsetHeight;
+    kpi.style.animationDelay = i*70+'ms'; kpi.classList.add('kpi-in');
+    const v = kpi.querySelector('.kpi-value');
+    if (v) setTimeout(() => countUpEl(v), i*70+150);
+  });
+}
+function switchTab(id) {
+  root.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  root.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-so-'+id).classList.add('active');
+  ['aa','tax','lc','le','cc','lh'].forEach((t,i) => {
+    if (t===id) root.querySelectorAll('.tab-btn')[i].classList.add('active');
+  });
+  animatePanel(id);
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+renderPeriodChips();
+updateScrollBtns();
+renderCharts();
+renderAllTables();
+updateAllKPIs();
+setTimeout(() => animatePanel('aa'), 100);
+
+window.soSwitchTab = switchTab;
+window.soSetGran = setGran;
+window.soSetPeriod = setPeriod;
+window.soScrollChips = scrollChips;
+window.__socialOnShow = () => Object.values(charts).forEach(c => c && c.resize());
+})();
+</script>
+<script>
+const VIEWS = {
+  growth: { title:'Growth Marketing Dashboard', sub:'Grupo Vigna · Análise por Marca', date:'Abril 2026', range:'Jun/25 – Mar/26' },
+  social: { title:'Social Media Dashboard', sub:'Grupo Vigna · Instagram & LinkedIn por Marca', date:'Abr/2026', range:'Jan/25 – Abr/26' },
+};
+const shownViews = { growth:true, social:false };
+function showView(name) {
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.view === name));
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-'+name));
+  const cfg = VIEWS[name];
+  document.getElementById('topbar-title').textContent = cfg.title;
+  document.getElementById('topbar-sub').textContent = cfg.sub;
+  document.getElementById('topbar-date-strong').textContent = cfg.date;
+  document.getElementById('topbar-date-range').textContent = cfg.range;
+  if (!shownViews[name]) {
+    shownViews[name] = true;
+    if (name === 'growth' && window.__growthOnShow) window.__growthOnShow();
+    if (name === 'social' && window.__socialOnShow) window.__socialOnShow();
+  }
+}
 </script>
 </body>
 </html>
