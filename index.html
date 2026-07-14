@@ -345,8 +345,8 @@ footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 12px; bor
     <div class="kpi blue"><div class="kpi-icon">💰</div><div class="kpi-label">Investimento</div><div class="kpi-value" id="cc-kpi-inv">R$ 5,3k</div><div class="kpi-delta" id="cc-kpi-inv-d"></div><div class="kpi-sub">Jan/26 – Jul/26</div></div>
     <div class="kpi blue"  ><div class="kpi-icon">👥</div><div class="kpi-label">Leads</div><div class="kpi-value" id="cc-kpi-leads">266</div><div class="kpi-delta" id="cc-kpi-leads-d"></div><div class="kpi-sub">Pagos + Orgânicos</div></div>
     <div class="kpi blue"  ><div class="kpi-icon">🎯</div><div class="kpi-label">SQLs</div><div class="kpi-value" id="cc-kpi-sql">32</div><div class="kpi-delta" id="cc-kpi-sql-d"></div><div class="kpi-sub">Leads qualificados</div></div>
-    <div class="kpi green" ><div class="kpi-icon">📝</div><div class="kpi-label">Contratos</div><div class="kpi-value" id="cc-kpi-cont">2</div><div class="kpi-delta" id="cc-kpi-cont-d"></div><div class="kpi-sub">Ticket médio R$ 500/mês</div></div>
-    <div class="kpi orange"><div class="kpi-icon">💵</div><div class="kpi-label">LTV Projetado</div><div class="kpi-value" id="cc-kpi-ltv">R$ 12k</div><div class="kpi-delta" id="cc-kpi-ltv-d"></div><div class="kpi-sub">2 × R$ 6.000</div></div>
+    <div class="kpi green" ><div class="kpi-icon">📝</div><div class="kpi-label">Contratos</div><div class="kpi-value" id="cc-kpi-cont">3</div><div class="kpi-delta" id="cc-kpi-cont-d"></div><div class="kpi-sub">Ticket médio R$ 300/mês</div></div>
+    <div class="kpi orange"><div class="kpi-icon">💵</div><div class="kpi-label">LTV Projetado</div><div class="kpi-value" id="cc-kpi-ltv">R$ 11k</div><div class="kpi-delta" id="cc-kpi-ltv-d"></div><div class="kpi-sub">3 × R$ 3.600</div></div>
   </div>
   <div class="section-title">Funil de Conversão</div>
   <div class="grid-2">
@@ -684,7 +684,7 @@ footer { text-align: center; padding: 24px; color: #94a3b8; font-size: 12px; bor
   </table></div>
 </div></div>
 
-<footer>Grupo Vigna · Dashboard Social Media · Jan/25 – Mai/26</footer>
+<footer>Grupo Vigna · Dashboard Social Media · Jan/25 – Jun/26</footer>
     </section>
   </div>
 </div>
@@ -708,6 +708,7 @@ const LC = [
   {mes:'Mar/26',investimento:3383.56,leads:64, mql:26, sql:6,  contratos:1, lucro:21600,  custo_lead:52.87,  custo_sql:563.93},
   {mes:'Apr/26',investimento:0,      leads:12, mql:12, sql:6,  contratos:0, lucro:0,     custo_lead:0,      custo_sql:0},
   {mes:'May/26',investimento:0,      leads:2,  mql:2,  sql:2,  contratos:0, lucro:0,     custo_lead:0,      custo_sql:0},
+  {mes:'Jun/26',investimento:0,      leads:0,  mql:0,  sql:0,  contratos:0, lucro:0,     custo_lead:0,      custo_sql:0},
 ];
 const LE = [
   {mes:'Jun/25',investimento:0,     leads:0,   mql:0,  sql:0,  contratos:0, lucro:0,    custo_lead:0},
@@ -722,14 +723,15 @@ const LE = [
   {mes:'Mar/26',investimento:0,      leads:1,   mql:1,  sql:5,  contratos:0, lucro:0,    custo_lead:0},
   {mes:'Apr/26',investimento:0,      leads:2,   mql:1,  sql:1,  contratos:0, lucro:0,    custo_lead:0},
   {mes:'May/26',investimento:0,      leads:7,   mql:5,  sql:3,  contratos:2, lucro:12000,custo_lead:0},
+  {mes:'Jun/26',investimento:0,      leads:5,   mql:5,  sql:2,  contratos:0, lucro:0,    custo_lead:0},
 ];
 const CC = [
   {mes:'Jan/26',investimento:0,     leads:0,   mql:0,  sql:0,  contratos:0, lucro:0,    custo_lead:0,     custo_sql:0},
   {mes:'Feb/26',investimento:0,     leads:0,   mql:0,  sql:0,  contratos:0, lucro:0,    custo_lead:0,     custo_sql:0},
   {mes:'Mar/26',investimento:0,     leads:0,   mql:0,  sql:0,  contratos:0, lucro:0,    custo_lead:0,     custo_sql:0},
   {mes:'Apr/26',investimento:683.92,leads:48,  mql:24, sql:8,  contratos:0, lucro:0,    custo_lead:14.25, custo_sql:85.49},
-  {mes:'May/26',investimento:2596.38,leads:218,mql:83, sql:7,  contratos:2, lucro:12000,custo_lead:11.91, custo_sql:370.91},
-  {mes:'Jun/26',investimento:1984.36,leads:123,mql:63, sql:17, contratos:0, lucro:0,    custo_lead:16.13, custo_sql:116.73},
+  {mes:'May/26',investimento:2596.38,leads:219,mql:83, sql:0,  contratos:1, lucro:3600, custo_lead:11.86, custo_sql:0},
+  {mes:'Jun/26',investimento:1984.36,leads:123,mql:63, sql:11, contratos:2, lucro:7200, custo_lead:16.13, custo_sql:180.4},
   {mes:'Jul/26',investimento:0,     leads:0,   mql:0,  sql:0,  contratos:0, lucro:0,    custo_lead:0,     custo_sql:0},
 ];
 const TAX = [
@@ -1367,7 +1369,7 @@ const root = document.getElementById('view-social');
 // ══════════════════════════════════════════════
 // DADOS
 // ══════════════════════════════════════════════
-const M = ['Jan/25','Fev/25','Mar/25','Abr/25','Mai/25','Jun/25','Jul/25','Ago/25','Set/25','Out/25','Nov/25','Dez/25','Jan/26','Fev/26','Mar/26','Abr/26','Mai/26'];
+const M = ['Jan/25','Fev/25','Mar/25','Abr/25','Mai/25','Jun/25','Jul/25','Ago/25','Set/25','Out/25','Nov/25','Dez/25','Jan/26','Fev/26','Mar/26','Abr/26','Mai/26','Jun/26'];
 
 const LC_IG = [
   {mes:'Jan/25',seg:4430,alcance:13233,imp:20563,eng:254,taxa:1.92,posts:27},
@@ -1387,6 +1389,7 @@ const LC_IG = [
   {mes:'Mar/26',seg:4436,alcance:97350,imp:292402,eng:142,taxa:0.15,posts:2},
   {mes:'Abr/26',seg:4435,alcance:33,imp:349,eng:3,taxa:9.09,posts:0},
   {mes:'Mai/26',seg:4217,alcance:47,imp:285,eng:7,taxa:14.89,posts:0},
+  {mes:'Jun/26',seg:2216,alcance:1933,imp:3532,eng:23,taxa:1.19,posts:0},
 ];
 const LE_IG = [
   {mes:'Jan/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
@@ -1406,6 +1409,7 @@ const LE_IG = [
   {mes:'Mar/26',seg:4813,alcance:743,imp:3759,eng:116,taxa:15.61,posts:12},
   {mes:'Abr/26',seg:4571,alcance:402,imp:1382,eng:52,taxa:12.94,posts:4},
   {mes:'Mai/26',seg:4562,alcance:607,imp:2040,eng:44,taxa:7.25,posts:2},
+  {mes:'Jun/26',seg:4548,alcance:9,imp:26,eng:0,taxa:0,posts:0},
 ];
 const TAX_IG = [
   {mes:'Jan/25',seg:5696,alcance:12766,imp:31153,eng:3106,taxa:24.33,posts:26},
@@ -1424,6 +1428,8 @@ const TAX_IG = [
   {mes:'Fev/26',seg:5750,alcance:2477,imp:20725,eng:466,taxa:18.81,posts:9},
   {mes:'Mar/26',seg:5754,alcance:2175,imp:22227,eng:890,taxa:40.92,posts:12},
   {mes:'Abr/26',seg:5764,alcance:1718,imp:21401,eng:533,taxa:31.02,posts:10},
+  {mes:'Mai/26',seg:5459,alcance:1768,imp:11140,eng:2103,taxa:118.95,posts:5},
+  {mes:'Jun/26',seg:5451,alcance:1442,imp:7778,eng:2410,taxa:167.13,posts:4},
 ];
 const AA_IG = [
   {mes:'Jan/25',seg:10667,alcance:14323,imp:125465,eng:1972,taxa:13.77,posts:25},
@@ -1442,6 +1448,8 @@ const AA_IG = [
   {mes:'Fev/26',seg:11452,alcance:5537,imp:73220,eng:455,taxa:8.22,posts:24},
   {mes:'Mar/26',seg:11499,alcance:12837,imp:157737,eng:1859,taxa:14.48,posts:29},
   {mes:'Abr/26',seg:11555,alcance:12839,imp:124187,eng:1452,taxa:11.31,posts:25},
+  {mes:'Mai/26',seg:11257,alcance:7052,imp:105837,eng:3708,taxa:52.58,posts:18},
+  {mes:'Jun/26',seg:11260,alcance:6346,imp:77129,eng:1109,taxa:17.48,posts:7},
 ];
 const CC_IG = [
   {mes:'Nov/25',seg:3138,alcance:767,imp:5284,eng:63,taxa:8.21,posts:12},
@@ -1451,6 +1459,7 @@ const CC_IG = [
   {mes:'Mar/26',seg:3095,alcance:1056,imp:4562,eng:143,taxa:13.54,posts:6},
   {mes:'Abr/26',seg:3125,alcance:7826,imp:11644,eng:303,taxa:3.87,posts:2},
   {mes:'Mai/26',seg:3178,alcance:22968,imp:42006,eng:641,taxa:2.79,posts:5},
+  {mes:'Jun/26',seg:3219,alcance:18117,imp:31879,eng:366,taxa:2.02,posts:0},
 ];
 const LC_LI = [
   {mes:'Jan/25',seg:1460,alcance:688,vis:41,eng:65,taxa:9.45,posts:27},
@@ -1470,6 +1479,7 @@ const LC_LI = [
   {mes:'Mar/26',seg:1594,alcance:471,vis:33,eng:13,taxa:2.76,posts:1},
   {mes:'Abr/26',seg:1593,alcance:149,vis:22,eng:0,taxa:0,posts:0},
   {mes:'Mai/26',seg:1595,alcance:38,vis:23,eng:0,taxa:0,posts:0},
+  {mes:'Jun/26',seg:1597,alcance:57,vis:19,eng:0,taxa:0,posts:0},
 ];
 const LE_LI = [
   {mes:'Jan/25',seg:298,alcance:331,vis:3,eng:36,taxa:10.88,posts:27},
@@ -1489,6 +1499,7 @@ const LE_LI = [
   {mes:'Mar/26',seg:314,alcance:116,vis:0,eng:6,taxa:5.17,posts:7},
   {mes:'Abr/26',seg:312,alcance:141,vis:2,eng:21,taxa:14.89,posts:3},
   {mes:'Mai/26',seg:317,alcance:53,vis:0,eng:2,taxa:3.77,posts:2},
+  {mes:'Jun/26',seg:316,alcance:2,vis:1,eng:0,taxa:0,posts:0},
 ];
 const TAX_LI = [
   {mes:'Jan/25',seg:876,alcance:1823,vis:49,eng:150,taxa:8.23,posts:26},
@@ -1507,6 +1518,8 @@ const TAX_LI = [
   {mes:'Fev/26',seg:1004,alcance:661,vis:25,eng:15,taxa:2.27,posts:11},
   {mes:'Mar/26',seg:1014,alcance:546,vis:28,eng:19,taxa:3.48,posts:0},
   {mes:'Abr/26',seg:1013,alcance:736,vis:24,eng:25,taxa:3.40,posts:4},
+  {mes:'Mai/26',seg:1020,alcance:815,vis:18,eng:29,taxa:3.56,posts:8},
+  {mes:'Jun/26',seg:1024,alcance:1216,vis:15,eng:47,taxa:3.87,posts:4},
 ];
 const AA_LI = [
   {mes:'Jan/25',seg:43408,alcance:99109,vis:1835,eng:1080,taxa:1.09,posts:28},
@@ -1525,6 +1538,8 @@ const AA_LI = [
   {mes:'Fev/26',seg:49660,alcance:19387,vis:1512,eng:195,taxa:1.01,posts:15},
   {mes:'Mar/26',seg:50219,alcance:25486,vis:1652,eng:251,taxa:0.98,posts:15},
   {mes:'Abr/26',seg:50684,alcance:47040,vis:1756,eng:423,taxa:0.90,posts:14},
+  {mes:'Mai/26',seg:51476,alcance:59829,vis:1777,eng:400,taxa:0.67,posts:25},
+  {mes:'Jun/26',seg:51476,alcance:11916,vis:1185,eng:139,taxa:1.17,posts:10},
 ];
 const CC_LI = [
   {mes:'Nov/25',seg:1174,alcance:165,vis:11,eng:12,taxa:7.27,posts:11},
@@ -1534,6 +1549,7 @@ const CC_LI = [
   {mes:'Mar/26',seg:1174,alcance:395,vis:27,eng:13,taxa:3.29,posts:12},
   {mes:'Abr/26',seg:1173,alcance:247,vis:16,eng:4,taxa:1.62,posts:2},
   {mes:'Mai/26',seg:1181,alcance:2659,vis:14,eng:65,taxa:2.44,posts:7},
+  {mes:'Jun/26',seg:1178,alcance:282,vis:14,eng:2,taxa:0.71,posts:0},
 ];
 const LH_IG = [
   {mes:'Jan/25',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
@@ -1553,6 +1569,7 @@ const LH_IG = [
   {mes:'Mar/26',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
   {mes:'Abr/26',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
   {mes:'Mai/26',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
+  {mes:'Jun/26',seg:0,alcance:0,imp:0,eng:0,taxa:0,posts:0},
 ];
 const LH_LI = [
   {mes:'Jan/25',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
@@ -1572,6 +1589,7 @@ const LH_LI = [
   {mes:'Mar/26',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
   {mes:'Abr/26',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
   {mes:'Mai/26',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
+  {mes:'Jun/26',seg:0,alcance:0,vis:0,eng:0,taxa:0,posts:0},
 ];
 
 // ══════════════════════════════════════════════
@@ -2120,7 +2138,7 @@ window.__socialOnShow = () => Object.values(charts).forEach(c => c && c.resize()
 <script>
 const VIEWS = {
   growth: { title:'Growth Marketing Dashboard', sub:'Grupo Vigna · Análise por Marca', date:'Julho 2026', range:'Jun/25 – Jul/26' },
-  social: { title:'Social Media Dashboard', sub:'Grupo Vigna · Instagram & LinkedIn por Marca', date:'Mai/2026', range:'Jan/25 – Mai/26' },
+  social: { title:'Social Media Dashboard', sub:'Grupo Vigna · Instagram & LinkedIn por Marca', date:'Jun/2026', range:'Jan/25 – Jun/26' },
 };
 const shownViews = { growth:true, social:false };
 function showView(name) {
